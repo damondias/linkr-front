@@ -1,13 +1,14 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SingInPage from "./pages/SignInPage";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <BrowserRouter>
           <Routes>
-            <Route path="/" element={"Sign In feature"} />
+            <Route path="/" element={<SingInPage />} />
             <Route path="/sign-up" element={"Sign Up feature "} />
             <Route path="/timeline" element={"Timeline feature"} />
             <Route path="/user/:userId" element={"user page feature"} />

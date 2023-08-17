@@ -1,35 +1,23 @@
 import styled from "styled-components";
-import React, { useContext, useState } from "react";
 
 
-export default function SingInPage(){
-
-
-    // const [form, setForm] = useState({email: "", senha: ""})
-
-    // function formulario(e){
-    //     setForm({...form, [e.target.name]:e.target.value})
-      
-    //   }
-
-
-    //   function logando(e){
-    //     e.preventDefault()
-
-    //   }
+export default function SingUpPage(){
 
     return(
+
         <ContainerPage>
-        <Left className="left-content">
+        <div className="left-content">
             <Titulo>linkr</Titulo>
             <Subtitle>lsave, share and discover the best links on the web</Subtitle>
-        </Left>
+        </div>
     <div className="right-content">
         <Form>
             <StyledInput placeholder="E-mail" type="email" name="email"  />
-            <StyledInput placeholder="Password" type="password" name="password"/>
-            <Button>Log In</Button>
-            <StyledParagraph>First time? Create an account!</StyledParagraph>
+            <StyledInput placeholder="Password" type="password" name="password" />
+            <StyledInput placeholder="username" type="password" name="password" />
+            <StyledInput placeholder="picture url" type="password" name="password" />
+            <Button>Sign Up</Button>
+            <StyledParagraph>Switch back to log in</StyledParagraph>
             
         </Form>
     </div>
@@ -38,7 +26,6 @@ export default function SingInPage(){
 
     )
 }
-
 
 const ContainerPage = styled.div`
   background-color: #151515;
@@ -107,10 +94,6 @@ const Titulo = styled.h1`
   color: #FFFFFF;
 `;
 
-const Left = styled.div`
-    display: flex;
-    justify-content: center;
-`
 
 const Subtitle = styled.h2`
   font-family: 'Oswald';
@@ -186,8 +169,6 @@ const StyledParagraph = styled.p`
   left: 1044px;
   color: #FFFFFF;
   text-decoration: underline;
-  display: flex;
-  justify-content: center;
 
 `;
 

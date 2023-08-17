@@ -1,12 +1,14 @@
 // import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SingInPage from "./pages/SignInPage";
+import NavBar from "./components/NavBar";
 
 function App() {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <BrowserRouter>
+        <NavBar/>
           <Routes>
             <Route path="/" element={<SingInPage />} />
             <Route path="/sign-up" element={"Sign Up feature "} />

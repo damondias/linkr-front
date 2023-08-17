@@ -14,9 +14,18 @@ async function createPost(body, token) {
     return promise;
 }
 
+async function getPost(token, offset) {
+    const auth = createHeaders(token);
+
+    const render_limit = 20;
+    const promise = await axios.get(`${BASE_URL}/posts/${render_limit}`, auth);
+
+    return promise;
+}
+
 const api = {
     createPost,
-
+    getPost,
 }
 
 export default api;

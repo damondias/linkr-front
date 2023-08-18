@@ -8,7 +8,7 @@ export default function SearchBar(){
     const nav = useNavigate()
     const location = useLocation()
     const [search,setSearch] = useState("")
-    const [results,setResults] = useState([{username:'sasasa'}])
+    const [results,setResults] = useState([])
     const [isOpen,setIsOpen] = useState(false)
 
     useEffect(()=>{

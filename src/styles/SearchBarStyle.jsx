@@ -8,9 +8,12 @@ export const SearchBarBody = styled.div`
     margin-top: 13.5px;
     background-color: #333333;
 
-    >form,input,div{
-        z-index: 2;
+    @media (min-width: 376px) {
+        position: fixed;
+        z-index: 3;
+        background-color: transparent;
     }
+
     @media (max-width:375px){
         margin-top: 85.5px;
         z-index: 0;
@@ -29,7 +32,7 @@ export const SearchBarBody = styled.div`
     input:focus + div{
         display: block;
     }
-    input:not(:focus) + div{
+    input:not(:focus) + div:not(:hover){
         display: none;
     }
 `;

@@ -8,14 +8,13 @@ export default function SearchBar(){
     const nav = useNavigate()
     const location = useLocation()
     const [search,setSearch] = useState("")
-    const [results,setResults] = useState([{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'}])
+    const [results,setResults] = useState([])
+    const config = {headers:{authorization:"a"}}
 
     useEffect(()=>{
         if(search!=""){
-            console.log(process.env.REACT_APP_API_URI)
-            console.log(process.env.NODE_ENV)
-            axios.get(`${process.env.REACT_APP_API_URI}/users/find/${search}`)
-            .then(r=>setResults(r.data))
+            axios.get(`${process.env.REACT_APP_API_URI}/users/find/${search}`,config)
+            .then(r=>{setResults(r.data)})
             .catch(error=>console.log(error.message))
         }
     },[search])
@@ -26,6 +25,7 @@ export default function SearchBar(){
         setSearch(option.username)
         nav(`/user/${option.id}`)
         setSearch("")
+        setResults([])
     }
 
     function handleSubmit(e){
@@ -34,6 +34,7 @@ export default function SearchBar(){
         if(users.length==1){
             nav(`/user/${users[0].id}`)
             setSearch("")
+            setResults([])
         }
     }
 

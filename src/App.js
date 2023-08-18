@@ -2,6 +2,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Timeline } from "./pages/index.pages";
 import SingInPage from "./pages/SignInPage";
+import NavBar from "./components/NavBar";
+import SearchBar from "./components/SearchBar";
 import SingUpPage from "./pages/SignUp";
 
 function App() {
@@ -9,6 +11,8 @@ function App() {
 
   return (
     <BrowserRouter>
+        <NavBar/>
+        <SearchBar/>
           <Routes>
             {/* <Route path="/" element={<SingInPage />} /> */}
             <Route path="" element={<SingUpPage />} />

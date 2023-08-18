@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const NavBarBody = styled.div`
     position: fixed;
+    z-index: 1;
     top: 0;
     width: 100vw;
     height: 72px;
@@ -13,6 +14,7 @@ export const NavBarBody = styled.div`
     box-sizing: border-box;
 
     p{
+        color: white;
         font-family: 'Passion One';
         font-weight: 700;
         font-size: 49px;
@@ -24,6 +26,7 @@ export const NavBarUser = styled.div`
     align-items: center;
     gap: 10px;
     ion-icon{
+        color: white;
         width: 30px;
         height: 30px;
     }

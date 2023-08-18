@@ -2,6 +2,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SingInPage from "./pages/SignInPage";
 import NavBar from "./components/NavBar";
+import SearchBar from "./components/SearchBar";
 
 function App() {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -9,6 +10,7 @@ function App() {
   return (
     <BrowserRouter>
         <NavBar/>
+        <SearchBar/>
           <Routes>
             <Route path="/" element={<SingInPage />} />
             <Route path="/sign-up" element={"Sign Up feature "} />

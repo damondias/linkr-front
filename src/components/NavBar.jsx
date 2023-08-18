@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { NavBarBody, NavBarOptions, NavBarUser } from "../styles/NavBarStyle"
+import { NavBarBody, NavBarOptions, NavBarSearchBar, NavBarUser } from "../styles/NavBarStyle"
 import { useLocation } from "react-router-dom"
 
 export default function NavBar(){

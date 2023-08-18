@@ -21,21 +21,30 @@ export default function SearchBar(){
 
     if(location.pathname=="/sign-up"||location.pathname=="/") return
 
+    function Send(e){
+        console.log(e)
+        if(e!="no"){
+            nav(`/user/${e}`)
+            setSearch("")
+            setResults([])
+        }else{
+            let users = results.filter(u=>u.username==search)
+            if(users.length==1){
+                nav(`/user/${users[0].id}`)
+                setSearch("")
+                setResults([])
+            }
+        }
+    }
+
     function selectOption(option){
         setSearch(option.username)
-        nav(`/user/${option.id}`)
-        setSearch("")
-        setResults([])
+        Send(option.id)
     }
 
     function handleSubmit(e){
         e.preventDefault()
-        let users = results.filter(u=>u.username==search)
-        if(users.length==1){
-            nav(`/user/${users[0].id}`)
-            setSearch("")
-            setResults([])
-        }
+        Send("no")
     }
 
     return(
@@ -43,6 +52,7 @@ export default function SearchBar(){
             <form onSubmit={e=>handleSubmit(e)}>
                 <DebounceInput minLength={3} debounceTimeout={300}
                 onChange={e=>setSearch(e.target.value)} value={search}/>
+                <ion-icon name="search" onClick={()=>Send("no")}></ion-icon>
                 <OptionArea>
                     {results.map(e=>{return(
                         <div onClick={()=>selectOption(e)}>

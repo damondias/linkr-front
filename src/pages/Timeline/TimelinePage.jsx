@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Post, Publish } from "../../components/index.components";
 import { LeftWrapper, MainContainer, NoPost, RightWrapper, TimelineContainer, TitleContainer } from "./TimelineStyles";
 import api from "../../services/api";
+import TrendingComponent from "../../components/trendingComponent";
 
 export default function Timeline(){
     // const { user } = useAuth();
@@ -69,7 +70,7 @@ export default function Timeline(){
                     </TimelineContainer>
                 </LeftWrapper>
                 <RightWrapper>
-                    <>Trends</>
+                    <TrendingComponent/>
                 </RightWrapper>
         </MainContainer>
         </>        

@@ -8,8 +8,7 @@ export default function SearchBar(){
     const nav = useNavigate()
     const location = useLocation()
     const [search,setSearch] = useState("")
-    const [results,setResults] = useState([])
-    const [isOpen,setIsOpen] = useState(false)
+    const [results,setResults] = useState([{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'},{username:'aaaa'}])
 
     useEffect(()=>{
         if(search!=""){
@@ -25,10 +24,8 @@ export default function SearchBar(){
 
     function selectOption(option){
         setSearch(option.username)
-        setIsOpen(!isOpen)
         nav(`/user/${option.id}`)
         setSearch("")
-        setIsOpen(false)
     }
 
     function handleSubmit(e){
@@ -37,7 +34,6 @@ export default function SearchBar(){
         if(users.length==1){
             nav(`/user/${users[0].id}`)
             setSearch("")
-            setIsOpen(false)
         }
     }
 
@@ -45,8 +41,8 @@ export default function SearchBar(){
         <SearchBarBody>
             <form onSubmit={e=>handleSubmit(e)}>
                 <DebounceInput minLength={3} debounceTimeout={300}
-                onChange={e=>setSearch(e.target.value)} value={search} onClick={()=>setIsOpen(!isOpen)}/>
-                <OptionArea hidden={!isOpen}>
+                onChange={e=>setSearch(e.target.value)} value={search}/>
+                <OptionArea>
                     {results.map(e=>{return(
                         <div onClick={()=>selectOption(e)}>
                             <img src={e.image}/> {e.username}

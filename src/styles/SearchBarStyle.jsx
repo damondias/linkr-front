@@ -25,10 +25,17 @@ export const SearchBarBody = styled.div`
     }
     option{
         width:563px;
-    }    
+    }
+    input:focus + div{
+        display: block;
+    }
+    input:not(:focus) + div{
+        display: none;
+    }
 `;
 
 export const OptionArea = styled.div`
+    position: absolute;
     max-width: 100vw;
     width: 563px;
     border-radius: 0 0 8px 8px;

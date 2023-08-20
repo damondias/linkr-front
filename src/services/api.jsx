@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
+
 
 const BASE_URL = process.env.REACT_APP_API_URI;
 
@@ -23,9 +25,14 @@ async function getPost(token) {
     return promise;
 }
 
+
+
+
+
 const api = {
     createPost,
     getPost,
+    
 }
 
 export default api;

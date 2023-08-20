@@ -8,7 +8,7 @@ async function useSignUp() {
     const navigate = useNavigate()
 
     return (body) => {
-        axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, body)
+        axios.post(`${process.env.REACT_APP_API_URL}/cadastro`, body)
             .then(res => navigate("/"))
             .catch(err => alert(err.response.data))
     }

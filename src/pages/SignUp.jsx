@@ -3,10 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import apiAuth from "../services/apiAuth";
 import { useState } from "react";
 
-
-
-
-
 export default function SingUpPage(){
 
   const [form, setForm] = useState({email:"", password:"", username:"", url:""})
@@ -40,31 +36,31 @@ export default function SingUpPage(){
       });
   }
 
-  }
+  
     return(
-
+      
         <ContainerPage>
-        <div className="left-content">
-            <Titulo>linkr</Titulo>
-            <Subtitle>lsave, share and discover the best links on the web</Subtitle>
-        </div>
-    <div className="right-content">
-        <Form onSubmit={logando}>
-        <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={formulario} />
+          <div className="left-content">
+              <Titulo>linkr</Titulo>
+              <Subtitle>lsave, share and discover the best links on the web</Subtitle>
+          </div>
+        <div className="right-content">
+          <Form onSubmit={logando}>
+          <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={formulario} />
             <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={formulario}/>
             <StyledInput placeholder="username" type="password" name="username" value={form.username} required onChange={formulario}/>
             <StyledInput placeholder="picture url" type="password" name="url" value={form.url} required onChange={formulario}/>
             <Button type="submit">Sign Up</Button>
             <Link to="/"> <StyledParagraph>Switch back to log in</StyledParagraph></Link>
             
-        </Form>
-    </div>
-    </ContainerPage>
+          </Form>
+        </div>
+      </ContainerPage>
        
 
     )
 
-
+}    
 const ContainerPage = styled.div`
   background-color: #151515;
   box-shadow: 4px 0px 4px 0px #00000040;

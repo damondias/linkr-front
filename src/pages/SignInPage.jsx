@@ -36,7 +36,7 @@ export default function SingInPage(){
       
   }
 
-    }
+
 
     return(
         <ContainerPage>
@@ -57,7 +57,7 @@ export default function SingInPage(){
        
 
     )
-}
+  }
 
 
 const ContainerPage = styled.div`

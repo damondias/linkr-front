@@ -14,8 +14,8 @@ function App() {
         <NavBar/>
         <SearchBar/>
           <Routes>
-            {/* <Route path="/" element={<SingInPage />} /> */}
-            <Route path="" element={<SingUpPage />} />
+            <Route path="/" element={<SingInPage />} />
+            <Route path="/sign-up" element={<SingUpPage />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="/user/:userId" element={"user page feature"} />
             <Route path="/hashtag/:hashtag" element={"HashtagPage feature"} />

@@ -8,20 +8,30 @@ export const SearchBarBody = styled.div`
     margin-top: 13.5px;
     background-color: #333333;
 
-    >form,input,div{
-        z-index: 2;
+    @media (min-width: 376px) {
+        position: fixed;
+        z-index: 3;
+        background-color: transparent;
     }
+
     @media (max-width:375px){
         margin-top: 85.5px;
         z-index: 0;
     }
     input{
+        box-sizing: border-box;
         max-width: 100vw;
         width: 563px;
         height: 45px;
-        padding: 0;
+        padding: 0 20px;
         border: 0;
         border-radius: 8px;
+    }
+    ion-icon{
+        position: absolute;
+        margin: 8.5px -40px;
+        width: 28px;
+        height: 28px;
     }
     option{
         width:563px;
@@ -29,7 +39,7 @@ export const SearchBarBody = styled.div`
     input:focus + div{
         display: block;
     }
-    input:not(:focus) + div{
+    input:not(:focus) + div:not(:hover){
         display: none;
     }
 `;

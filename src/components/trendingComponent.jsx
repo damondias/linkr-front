@@ -8,7 +8,7 @@ export default function TrendingComponent(){
     const [trends,setTrends] = useState([])
 
     useEffect(()=>{
-        axios.get(`${process.env.REACY_APP_API_URL}/hashtag`)
+        axios.get(`${process.env.REACT_APP_API_URI}/hashtag`)
         .then(r=>setTrends(r.data))
         .catch(error=>console.log(error.message))
     },[])

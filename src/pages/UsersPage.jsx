@@ -6,9 +6,10 @@ import TrendingComponent from "../components/trendingComponent";
 import { useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-export default function HashtagPage(){
+export default function UsersPage(){
     const { user } = useAuth();
-    const {hashtag} = useParams();
+    const {id} = useParams();
+    const [owner, setOwner] = useState("")
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -20,9 +21,10 @@ export default function HashtagPage(){
 
         setLoading(true);
 
-        api.getHashtagPost(user?.token,hashtag).then(res => {
+        api.getUsersPost(user?.token,id).then(res => {
 
             setPosts(res.data);
+            setOwner(res.data[0]);
             setLoading(false);
 
         }).catch(error => {
@@ -43,7 +45,7 @@ export default function HashtagPage(){
                 <LeftWrapper>
                     <TimelineContainer>
                         <TitleContainer>
-                            #{hashtag}
+                            {owner.username}'s posts
                         </TitleContainer>
                         {isLoading
                             ? <h2> Loading ... </h2>

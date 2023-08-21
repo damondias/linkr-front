@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
-
 
 const BASE_URL = process.env.REACT_APP_API_URI;
 
@@ -33,12 +31,36 @@ async function getHashtagPost(token,hashtag) {
     return promise;
 }
 
+async function getUsersPost(token,id) {
+    const auth = createHeaders(token);
 
+    const promise = await axios.get(`${BASE_URL}/user/${id}`, auth);
+
+    return promise;
+}
+
+async function deletePost(postId, token) {
+    const auth = createHeaders(token);
+    console.log({token, postId})
+    const promise = await axios.delete(`${BASE_URL}/post/delete/${postId}`, auth);
+
+    return promise;
+}
+
+async function editPost(body, postid, token) {
+    const auth = createHeaders(token);
+
+    const promise = await axios.put(`${BASE_URL}/posts/update/${postid}`, body, auth);
+    return promise;
+}
 
 const api = {
     createPost,
     getPost,
-    getHashtagPost
+    getHashtagPost,
+    getUsersPost,
+    deletePost,
+    editPost,
 }
 
 export default api;

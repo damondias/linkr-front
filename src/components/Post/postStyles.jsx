@@ -13,6 +13,8 @@ const PostBody = styled.div`
     background-color: #171717;
     font-family: "Lato", sans-serif;
 
+    position: relative;
+
     @media (max-width: 610px) {
         width: 100%;
         border-radius: 0;
@@ -94,6 +96,7 @@ const UserMessage = styled.div`
     line-height: 20.7px;
     color: #B7B7B7;
 
+    display: ${(props) => props.editing == true ? 'none': 'inline'};
     padding-bottom: 8px;
 
     span {

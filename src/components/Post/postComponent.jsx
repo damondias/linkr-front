@@ -11,7 +11,7 @@ import { Tagify } from 'react-tagify'
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
-import { FaPencil } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 import { TbTrashFilled } from 'react-icons/tb'
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
@@ -167,6 +167,7 @@ const SCDelete = styled(TbTrashFilled)`
     height: 18px;
     position: absolute;
 
+    color: #ffffff;
     top: 15px;
     right: 15px;
 
@@ -180,6 +181,7 @@ const SCEdit = styled(FaPencilAlt)`
     height: 18px;   
     position: absolute;
 
+    color: #ffffff;
     top: 15px;
     right: 45px;
 

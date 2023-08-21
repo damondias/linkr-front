@@ -89,7 +89,7 @@ export default function Post({ url, postId, title, description, image, message, 
             <TextContainer>
                 <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
                 <UserMessage>
-                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}}>
+                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}} color="#ffffff">
                       {message}  
                     </Tagify>
                 </UserMessage>

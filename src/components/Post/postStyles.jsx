@@ -42,6 +42,8 @@ const UserPicture = styled.div`
         height: 50px;
 
         border-radius: 50%;
+
+        border: 1px solid white
     }
 
     @media (max-width: 610px) {

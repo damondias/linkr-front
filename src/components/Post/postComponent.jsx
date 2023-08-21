@@ -7,6 +7,8 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
+import { Tagify } from 'react-tagify'
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 
@@ -16,6 +18,8 @@ export default function Post({ url, postId, title, description, image, message, 
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
     const [userLiked, setUserLiked] = useState([]);
+  
+    const nav = useNavigate()
 
     const token = user.token;
 
@@ -45,7 +49,6 @@ export default function Post({ url, postId, title, description, image, message, 
     }         
 
         useEffect(getLikes, [user.postId])
-
 
     function like(p){
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
@@ -81,7 +84,9 @@ export default function Post({ url, postId, title, description, image, message, 
             <TextContainer>
                 <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
                 <UserMessage>
-                    {message}
+                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}}>
+                      {message}  
+                    </Tagify>
                 </UserMessage>
                 <MetadataContainer>
                     <a href={url} target="_blank" rel="noopener noreferrer">

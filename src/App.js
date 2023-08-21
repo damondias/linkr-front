@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import SingUpPage from "./pages/SignUp";
 import HashtagPage from "./pages/HashtagPage";
+import UsersPage from "./pages/UsersPage";
 import { AuthProvider } from "./contexts/authContext";
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
             <Route path="/" element={<SingInPage />} />
             <Route path="/sign-up" element={<SingUpPage />} />
             <Route path="/timeline" element={<Timeline />} />
-            <Route path="/user/:userId" element={"user page feature"} />
+            <Route path="/user/:id" element={<UsersPage />} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
           </Routes>
       </AuthProvider>

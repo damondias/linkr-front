@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // import useAuth from '../../Hooks/useAuth';
 import Metadata from "./Metadata/metadataComponent";
 import { MetadataContainer, PostBody, TextContainer, UserContainer, UserMessage, UserName, UserPicture } from "./postStyles";
@@ -14,6 +14,7 @@ import axios from "axios";
 import { FaPencilAlt } from 'react-icons/fa';
 import { TbTrashFilled } from 'react-icons/tb'
 import DeletePost from "./Delete/DeleteComponent";
+import api from "../../services/api";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
@@ -21,8 +22,18 @@ export default function Post({ url, postId, title, description, image, message, 
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
     const [userLiked, setUserLiked] = useState([]);
+
     const [isDeleting, setDeleting] = useState(false);
-  
+    const [isEditing, setIsEditing] = useState(false);
+    const [textToEdit, setTextToEdit] = useState(message);
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing,isDeleting]);
+            
     const nav = useNavigate()
 
     const token = user.token;
@@ -66,6 +77,34 @@ export default function Post({ url, postId, title, description, image, message, 
         getLikes();
     }
 
+    function toggleEdit() {
+        setTextToEdit(message);
+        setIsEditing(!isEditing);
+    }
+
+    function editPost(e) {
+        e.preventDefault();
+        const body = {
+            url: url,
+            userMessage: textToEdit
+        };
+
+        api.editPost(body, postId, user.token)
+            .then(() => {
+                setIsEditing(!isEditing);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                alert("Erro na tentativa de edição")
+            });
+    }
+
+    function verifyEsc(e) {
+        if (e.key === 'Escape')
+            toggleEdit();
+    }
+
     return (
         <PostBody>
             <UserContainer>
@@ -88,11 +127,27 @@ export default function Post({ url, postId, title, description, image, message, 
             </UserContainer>
             <TextContainer>
                 <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
-                <UserMessage>
+                <UserMessage editing={isEditing}>
                     <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}} color="#ffffff">
                       {message}  
                     </Tagify>
                 </UserMessage>
+                <span>{
+                    isEditing &&
+                        (
+                            <form onSubmit={editPost} onKeyDown={verifyEsc}>
+                                <input
+                                    ref={inputRef}
+                                    value={textToEdit}
+                                    onChange={e => setTextToEdit(e.target.value)}
+                                    className='edit-input'
+                                >
+                                </input>
+                            </form>
+                        )
+                    }
+                </span>
+ 
                 <MetadataContainer>
                     <a href={url} target="_blank" rel="noopener noreferrer">
                         <Metadata
@@ -106,7 +161,7 @@ export default function Post({ url, postId, title, description, image, message, 
                 </MetadataContainer>
             </TextContainer>
             <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
-            <SCEdit userPost={userId === user.userId} />
+            <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
     );
 }

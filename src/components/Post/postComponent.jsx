@@ -50,7 +50,7 @@ export default function Post({ url, postId, title, description, image, message, 
         })
     }         
 
-        useEffect(getLikes, [user.postId])
+    useEffect(getLikes, [user.postId, postId, url, user])
 
     function like(p){
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
@@ -102,8 +102,8 @@ export default function Post({ url, postId, title, description, image, message, 
                     </a>
                 </MetadataContainer>
             </TextContainer>
-            <SCDelete />
-            <SCEdit />
+            <SCDelete userPost={userId === user.userId}/>
+            <SCEdit userPost={userId === user.userId}/>
         </PostBody>
     );
 }
@@ -163,9 +163,26 @@ const SCTooltipText = styled.p`
 `
 
 const SCDelete = styled(TbTrashFilled)`
-    
+    width: 20px;
+    height: 18px;
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    cursor: pointer;
+
+    display: ${props => props.userPost ? 'block' : 'none'}
 `
 
-const SCEdit = styled(FaPencil)`
-    
+const SCEdit = styled(FaPencilAlt)`
+    width: 20px;
+    height: 18px;   
+    position: absolute;
+
+    top: 15px;
+    right: 45px;
+
+    cursor: pointer;
+    display: ${props => props.userPost ? 'block' : 'none'} 
 `

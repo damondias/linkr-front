@@ -13,6 +13,8 @@ const PostBody = styled.div`
     background-color: #171717;
     font-family: "Lato", sans-serif;
 
+    position: relative;
+
     @media (max-width: 610px) {
         width: 100%;
         border-radius: 0;

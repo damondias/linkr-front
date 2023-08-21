@@ -7,9 +7,12 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
+import { Tagify } from 'react-tagify'
+import { useNavigate } from "react-router-dom";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
+    const nav = useNavigate()
     const liked = 1;
 
     function like(p){
@@ -38,7 +41,9 @@ export default function Post({ url, postId, title, description, image, message, 
             <TextContainer>
                 <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
                 <UserMessage>
-                    {message}
+                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}}>
+                      {message}  
+                    </Tagify>
                 </UserMessage>
                 <MetadataContainer>
                     <a href={url} target="_blank" rel="noopener noreferrer">

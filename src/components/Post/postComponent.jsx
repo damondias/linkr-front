@@ -85,14 +85,14 @@ const SCQntdLikes = styled.p`
     font-family: "Lato", sans-serif;
     font-weight: 400;
     font-size: 11px;
-    color: black;
+    color: #ffffff;
     cursor: default;
 `
 
 const SCTooltip = styled(Tooltip)`
     box-shadow: 0px 4px 4px 0px #0000000D;
     width: 169px;
-    height: 23px;
+    height: 20px;
     border-radius: 3px;
     opacity: 0.9;
     color: #ffffff;

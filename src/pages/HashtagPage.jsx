@@ -4,10 +4,10 @@ import { LeftWrapper, MainContainer, NoPost, RightWrapper, TimelineContainer, Ti
 import api from "../services/api";
 import TrendingComponent from "../components/trendingComponent";
 import { useParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function HashtagPage(){
-    // const { user } = useAuth();
-    const user = { id: '1', image: "https://pbs.twimg.com/media/DSA5rQzW4AEdlD7.jpg", token: 'token_usuario1_sessao1'} 
+    const { user } = useAuth();
     const {hashtag} = useParams();
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(false);

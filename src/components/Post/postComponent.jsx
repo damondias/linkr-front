@@ -11,6 +11,8 @@ import { Tagify } from 'react-tagify'
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
+import { FaPencil } from 'react-icons/fa';
+import { TbTrashFilled } from 'react-icons/tb'
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
@@ -100,6 +102,8 @@ export default function Post({ url, postId, title, description, image, message, 
                     </a>
                 </MetadataContainer>
             </TextContainer>
+            <SCDelete />
+            <SCEdit />
         </PostBody>
     );
 }
@@ -156,4 +160,12 @@ const SCTooltipText = styled.p`
     font-weight: 700;
     line-height: 13px;
     color:#505050;
+`
+
+const SCDelete = styled(TbTrashFilled)`
+    
+`
+
+const SCEdit = styled(FaPencil)`
+    
 `

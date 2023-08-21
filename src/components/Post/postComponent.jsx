@@ -15,7 +15,9 @@ export default function Post({ url, postId, title, description, image, message, 
     const { user } = useAuth();
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
-    const [userLike, setUserLike] = useState(0)
+    const [userLiked, setUserLiked] = useState([]);
+
+    console.log(userId)
 
     const token = user.token;
 
@@ -30,17 +32,21 @@ export default function Post({ url, postId, title, description, image, message, 
         },
     };
 
-    useEffect(() => {
-         const promise = axios.get(`${process.env.REACT_APP_API_URI}/likes/${postId}`, config)
+    function getLikes(){
+        const promise = axios.get(`${process.env.REACT_APP_API_URI}/likes/${postId}`, config)
          promise.then(resposta => {
             setLikes(resposta.data.count);
             setText(resposta.data.text)
-            setUserLike(resposta.data.user)
+            if(resposta.data.user){
+                setUserLiked(...userLiked, resposta.data.user)
+            }
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
         })
-    }, [postId])
+    }         
+
+        useEffect(getLikes, [postId])
 
     function like(p){
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
@@ -50,7 +56,12 @@ export default function Post({ url, postId, title, description, image, message, 
         promise.catch((erro) => {
             console.log(erro.response.data)
         })
+
+        getLikes();
     }
+
+
+    const liked = userLiked.includes(postId);
 
     return (
         <PostBody>
@@ -59,7 +70,7 @@ export default function Post({ url, postId, title, description, image, message, 
                     <img src={profilePic ? profilePic : default_profile_pic} />
                 </UserPicture>
                 <SCContainerLikes>
-                    {userLike > 0 ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
+                    {liked > 0 ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
                     <a
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"

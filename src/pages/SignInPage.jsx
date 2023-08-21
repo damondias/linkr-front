@@ -1,13 +1,16 @@
+import useAuth from "../hooks/useAuth";
+
 import styled from "styled-components";
 import React, { useState } from "react";
 import apiAuth from "../services/apiAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 export default function SingInPage(){
 
 
   const [form, setForm] = useState({email: "", password: ""});
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   function formulario(e){
@@ -15,23 +18,17 @@ export default function SingInPage(){
   }
 
 
-    function logando(e){
+    async function logando(e){
       e.preventDefault();
-      
-      const user = { ...form };
 
-      apiAuth.login (user)
-        .then( res =>{
-          console.log(res);
-          navigate("/timeline");
-  
-        })
-        .catch(err =>{
-          console.log(err.response)
-          alert(err.response)
-  
-  
-        })
+        try {
+          const { data } = await apiAuth.login({ ...form });
+          setUser(data);
+          navigate('/timeline');
+        } catch (error) {
+          console.log(error);
+          alert("Erro, tente novamente");
+        }
     }
 
     return(
@@ -45,7 +42,7 @@ export default function SingInPage(){
             <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={(e) => formulario(e)} />
             <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={(e) => formulario(e)}/>
             <Button type="submit">Log In</Button>
-            <StyledParagraph >First time? Create an account!</StyledParagraph>
+            <StyledParagraph to="/sign-up">First time? Create an account!</StyledParagraph>
         </Form>
     </div>
     </ContainerPage>
@@ -153,7 +150,7 @@ const StyledInput = styled.input`
   width: 429px;
   height: 65px;
   border-radius: 6px;
-  color: #FFFFFF;
+  color: #9F9F9F;
   font-family: Oswald;
 font-size: 27px;
 font-weight: 700;
@@ -188,7 +185,7 @@ const Button = styled.button`
   }
 `;
 
-const StyledParagraph = styled.p`
+const StyledParagraph = styled(Link)`
   font-family: Lato;
   font-size: 20px;
   font-weight: 400;

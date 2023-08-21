@@ -4,10 +4,11 @@ import api from '../../services/api.jsx';
 // import useAuth from "../../Hooks/useAuth";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth.jsx';
 
 export default function Publish() {
 
-    const  user  = { id: '1', image: "htttp//picture.com", token: 'token_usuario1_sessao1'} /*useAuth()*/ // contexto onde consigo os dados do id e token;
+    const { user } = useAuth();// contexto onde consigo os dados do id e token;
     const [formData, setFormData] = useState({ url: '', userMessage: '' });
     const [loading, setLoading] = useState(false);
 

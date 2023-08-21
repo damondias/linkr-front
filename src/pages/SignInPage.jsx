@@ -1,3 +1,5 @@
+import useAuth from "../hooks/useAuth";
+
 import styled from "styled-components";
 import React, { useState } from "react";
 import apiAuth from "../services/apiAuth";
@@ -8,6 +10,7 @@ export default function SingInPage(){
 
 
   const [form, setForm] = useState({email: "", password: ""});
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   function formulario(e){
@@ -15,23 +18,17 @@ export default function SingInPage(){
   }
 
 
-    function logando(e){
+    async function logando(e){
       e.preventDefault();
-      
-      const user = { ...form };
 
-      apiAuth.login (user)
-        .then( res =>{
-          console.log(res);
-          navigate("/timeline");
-  
-        })
-        .catch(err =>{
-          console.log(err.response)
-          alert(err.response)
-  
-  
-        })
+        try {
+          const { data } = await apiAuth.login({ ...form });
+          setUser(data);
+          navigate('/timeline');
+        } catch (error) {
+          console.log(error);
+          alert("Erro, tente novamente");
+        }
     }
 
     return(

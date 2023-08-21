@@ -5,12 +5,14 @@ import SingInPage from "./pages/SignInPage";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import SingUpPage from "./pages/SignUp";
+import { AuthProvider } from "./contexts/authContext";
 
 function App() {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <BrowserRouter>
+      <AuthProvider>
         <NavBar/>
         <SearchBar/>
           <Routes>
@@ -20,7 +22,9 @@ function App() {
             <Route path="/user/:userId" element={"user page feature"} />
             <Route path="/hashtag/:hashtag" element={"HashtagPage feature"} />
           </Routes>
-    </BrowserRouter>  
+      </AuthProvider>
+    </BrowserRouter>
+      
   );
 }
 

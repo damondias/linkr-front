@@ -158,7 +158,7 @@ const StyledInput = styled.input`
   width: 429px;
   height: 65px;
   border-radius: 6px;
-  color: #FFFFFF;
+  color: #9F9F9F;
   font-family: Oswald;
 font-size: 27px;
 font-weight: 700;

@@ -25,14 +25,20 @@ async function getPost(token) {
     return promise;
 }
 
+async function getHashtagPost(token,hashtag) {
+    const auth = createHeaders(token);
 
+    const promise = await axios.get(`${BASE_URL}/hashtag/${hashtag}`, auth);
+
+    return promise;
+}
 
 
 
 const api = {
     createPost,
     getPost,
-    
+    getHashtagPost
 }
 
 export default api;

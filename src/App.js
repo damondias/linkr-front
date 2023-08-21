@@ -5,6 +5,7 @@ import SingInPage from "./pages/SignInPage";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import SingUpPage from "./pages/SignUp";
+import HashtagPage from "./pages/HashtagPage";
 
 function App() {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +19,7 @@ function App() {
             <Route path="/sign-up" element={<SingUpPage />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="/user/:userId" element={"user page feature"} />
-            <Route path="/hashtag/:hashtag" element={"HashtagPage feature"} />
+            <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
           </Routes>
     </BrowserRouter>  
   );

@@ -13,6 +13,7 @@ import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { FaPencilAlt } from 'react-icons/fa';
 import { TbTrashFilled } from 'react-icons/tb'
+import DeletePost from "./Delete/DeleteComponent";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
@@ -20,6 +21,7 @@ export default function Post({ url, postId, title, description, image, message, 
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
     const [userLiked, setUserLiked] = useState([]);
+    const [isDeleting, setDeleting] = useState(false);
   
     const nav = useNavigate()
 
@@ -67,6 +69,7 @@ export default function Post({ url, postId, title, description, image, message, 
     return (
         <PostBody>
             <UserContainer>
+                {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
                 <UserPicture>
                     <img src={profilePic ? profilePic : default_profile_pic} />
                 </UserPicture>
@@ -102,8 +105,8 @@ export default function Post({ url, postId, title, description, image, message, 
                     </a>
                 </MetadataContainer>
             </TextContainer>
-            <SCDelete userPost={userId === user.userId}/>
-            <SCEdit userPost={userId === user.userId}/>
+            <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
+            <SCEdit userPost={userId === user.userId} />
         </PostBody>
     );
 }

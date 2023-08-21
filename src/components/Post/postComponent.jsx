@@ -91,8 +91,8 @@ const SCQntdLikes = styled.p`
 
 const SCTooltip = styled(Tooltip)`
     box-shadow: 0px 4px 4px 0px #0000000D;
-    width: 169px;
-    height: 20px;
+    width: 100%;
+    height: 10px;
     border-radius: 3px;
     opacity: 0.9;
     color: #ffffff;

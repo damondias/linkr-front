@@ -3,13 +3,15 @@ import { styled } from "styled-components";
 export const SearchBarBody = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: fit-content;
     align-items: center;
     margin-top: 13.5px;
     background-color: #333333;
 
     @media (min-width: 376px) {
         position: fixed;
+        left: 50%;
+        transform: translate(-50%, 0);
         z-index: 3;
         background-color: transparent;
     }

@@ -1,42 +1,35 @@
+import useAuth from "../hooks/useAuth";
+
 import styled from "styled-components";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import apiAuth from "../services/apiAuth";
+import { useNavigate, Link } from "react-router-dom";
 
 
 export default function SingInPage(){
 
 
-  const [form, setForm] = useState({email: "", senha: ""})
+  const [form, setForm] = useState({email: "", password: ""});
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
   function formulario(e){
       setForm({...form, [e.target.name]:e.target.value})
-    
-    }
-
-
-    function logando(e){
-      e.preventDefault()
-      console.log(form)
-
-    
-    console.log("body", body)
-      apiAuth.login (body)
-        .then( res =>{
-          console.log(res)
-          navigate("/timeline")
-  
-        })
-        .catch(err =>{
-          console.log(err.response)
-          alert(err.response)
-  
-  
-        })
-
-      
   }
 
 
+    async function logando(e){
+      e.preventDefault();
+
+        try {
+          const { data } = await apiAuth.login({ ...form });
+          setUser(data);
+          navigate('/timeline');
+        } catch (error) {
+          console.log(error);
+          alert("Erro, tente novamente");
+        }
+    }
 
     return(
         <ContainerPage>
@@ -44,13 +37,12 @@ export default function SingInPage(){
             <Titulo>linkr</Titulo>
             <Subtitle>lsave, share and discover the best links on the web</Subtitle>
         </Left>
-    <div className="right-content">
-        <Form onChange={formulario}>
-        <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={formulario} />
-            <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={formulario}/>
+        <div className="right-content">
+        <Form onSubmit={logando}>
+            <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={(e) => formulario(e)} />
+            <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={(e) => formulario(e)}/>
             <Button type="submit">Log In</Button>
-            <StyledParagraph>First time? Create an account!</StyledParagraph>
-            
+            <StyledParagraph to="/sign-up">First time? Create an account!</StyledParagraph>
         </Form>
     </div>
     </ContainerPage>
@@ -193,7 +185,7 @@ const Button = styled.button`
   }
 `;
 
-const StyledParagraph = styled.p`
+const StyledParagraph = styled(Link)`
   font-family: Lato;
   font-size: 20px;
   font-weight: 400;

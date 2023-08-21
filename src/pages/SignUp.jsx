@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function SingUpPage(){
 
-  const [form, setForm] = useState({email:"", password:"", username:"", url:""})
+  const [form, setForm] = useState({email:"", password:"", username:"", image:""})
   const navigate = useNavigate()
 
   function formulario(e){
@@ -46,10 +46,10 @@ export default function SingUpPage(){
           </div>
         <div className="right-content">
           <Form onSubmit={logando}>
-          <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={formulario} />
-            <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={formulario}/>
-            <StyledInput placeholder="username" type="password" name="username" value={form.username} required onChange={formulario}/>
-            <StyledInput placeholder="picture url" type="password" name="url" value={form.url} required onChange={formulario}/>
+          <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={(e) => formulario(e)} />
+            <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={(e) => formulario(e)}/>
+            <StyledInput placeholder="username" type="password" name="username" value={form.username} required onChange={(e) => formulario(e)}/>
+            <StyledInput placeholder="picture url" type="password" name="url" value={form.url} required onChange={(e) => formulario(e)}/>
             <Button type="submit">Sign Up</Button>
             <Link to="/"> <StyledParagraph>Switch back to log in</StyledParagraph></Link>
             

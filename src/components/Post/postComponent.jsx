@@ -17,12 +17,10 @@ export default function Post({ url, postId, title, description, image, message, 
     const [ text, setText ] = useState('');
     const [userLiked, setUserLiked] = useState([]);
 
-    console.log(userId)
-
     const token = user.token;
 
     const data = {
-        userId,
+        userId: user.userId,
         postId
     }
 
@@ -37,8 +35,8 @@ export default function Post({ url, postId, title, description, image, message, 
          promise.then(resposta => {
             setLikes(resposta.data.count);
             setText(resposta.data.text)
-            if(resposta.data.user){
-                setUserLiked(...userLiked, resposta.data.user)
+            if(resposta.data.user !== null){
+                setUserLiked([...userLiked, resposta.data.user])
             }
         })
         promise.catch((erro) => {
@@ -46,7 +44,8 @@ export default function Post({ url, postId, title, description, image, message, 
         })
     }         
 
-        useEffect(getLikes, [postId])
+        useEffect(getLikes, [user.postId])
+
 
     function like(p){
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
@@ -60,9 +59,6 @@ export default function Post({ url, postId, title, description, image, message, 
         getLikes();
     }
 
-
-    const liked = userLiked.includes(postId);
-
     return (
         <PostBody>
             <UserContainer>
@@ -70,7 +66,7 @@ export default function Post({ url, postId, title, description, image, message, 
                     <img src={profilePic ? profilePic : default_profile_pic} />
                 </UserPicture>
                 <SCContainerLikes>
-                    {liked > 0 ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
+                    {userLiked.includes(postId) ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
                     <a
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"

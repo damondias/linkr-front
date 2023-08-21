@@ -96,6 +96,7 @@ const UserMessage = styled.div`
     line-height: 20.7px;
     color: #B7B7B7;
 
+    display: ${(props) => props.editing == true ? 'none': 'inline'};
     padding-bottom: 8px;
 
     span {

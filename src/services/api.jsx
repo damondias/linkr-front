@@ -47,12 +47,20 @@ async function deletePost(postId, token) {
     return promise;
 }
 
+async function editPost(body, postid, token) {
+    const auth = createHeaders(token);
+
+    const promise = await axios.put(`${BASE_URL}/posts/update/${postid}`, body, auth);
+    return promise;
+}
+
 const api = {
     createPost,
     getPost,
     getHashtagPost,
     getUsersPost,
     deletePost,
+    editPost,
 }
 
 export default api;

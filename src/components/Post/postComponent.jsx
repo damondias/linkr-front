@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import useAuth from '../../Hooks/useAuth';
 import Metadata from "./Metadata/metadataComponent";
 import { MetadataContainer, PostBody, TextContainer, UserContainer, UserMessage, UserName, UserPicture } from "./postStyles";
@@ -9,14 +9,59 @@ import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { Tagify } from 'react-tagify'
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import { FaPencilAlt } from 'react-icons/fa';
+import { TbTrashFilled } from 'react-icons/tb'
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
+    const { user } = useAuth();
+    const [ likes, setLikes ] = useState(0);
+    const [ text, setText ] = useState('');
+    const [userLiked, setUserLiked] = useState([]);
+  
     const nav = useNavigate()
-    const liked = 1;
+
+    const token = user.token;
+
+    const data = {
+        userId: user.userId,
+        postId
+    }
+
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+    };
+
+    function getLikes(){
+        const promise = axios.get(`${process.env.REACT_APP_API_URI}/likes/${postId}`, config)
+         promise.then(resposta => {
+            setLikes(resposta.data.count);
+            setText(resposta.data.text)
+            if(resposta.data.user !== null){
+                setUserLiked([...userLiked, resposta.data.user])
+            }
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
+    }         
+
+    useEffect(getLikes, [user.postId, postId, url, user])
 
     function like(p){
+        const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
+        promise.then(resposta => {
+            console.log(resposta.data)
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
 
+        getLikes();
     }
 
     return (
@@ -26,14 +71,14 @@ export default function Post({ url, postId, title, description, image, message, 
                     <img src={profilePic ? profilePic : default_profile_pic} />
                 </UserPicture>
                 <SCContainerLikes>
-                    {liked === 1 ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
+                    {userLiked.includes(postId) ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
                     <a
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"
-                    ><SCQntdLikes>13 likes</SCQntdLikes></a>
+                    ><SCQntdLikes>{likes}</SCQntdLikes></a>
                     <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
                         <SCTooltipText>
-                            {like === 1 ? 'Você, Julia e outras 11 pessoas' : 'Pedro, Julia e mais 11 pessoas'}
+                            {text}
                         </SCTooltipText>
                     </SCTooltip>
                 </SCContainerLikes>
@@ -57,6 +102,8 @@ export default function Post({ url, postId, title, description, image, message, 
                     </a>
                 </MetadataContainer>
             </TextContainer>
+            <SCDelete userPost={userId === user.userId}/>
+            <SCEdit userPost={userId === user.userId}/>
         </PostBody>
     );
 }
@@ -113,4 +160,31 @@ const SCTooltipText = styled.p`
     font-weight: 700;
     line-height: 13px;
     color:#505050;
+`
+
+const SCDelete = styled(TbTrashFilled)`
+    width: 20px;
+    height: 18px;
+    position: absolute;
+
+    color: #ffffff;
+    top: 15px;
+    right: 15px;
+
+    cursor: pointer;
+
+    display: ${props => props.userPost ? 'block' : 'none'}
+`
+
+const SCEdit = styled(FaPencilAlt)`
+    width: 20px;
+    height: 18px;   
+    position: absolute;
+
+    color: #ffffff;
+    top: 15px;
+    right: 45px;
+
+    cursor: pointer;
+    display: ${props => props.userPost ? 'block' : 'none'} 
 `

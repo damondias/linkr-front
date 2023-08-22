@@ -38,7 +38,6 @@ export default function HashtagPage(){
 
     return(
         <>
-            <>Header</>
             <MainContainer>
                 <LeftWrapper>
                     <TimelineContainer>

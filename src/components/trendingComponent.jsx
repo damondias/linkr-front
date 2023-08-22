@@ -2,13 +2,18 @@ import { useEffect, useState } from "react"
 import { TrendingBody } from "../styles/trendingCompStyle"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import useAuth from "../hooks/useAuth"
+import api from "../services/api"
 
 export default function TrendingComponent(){
     const nav = useNavigate()
     const [trends,setTrends] = useState([])
+    const {user} = useAuth()
+
+    console.log(user)
 
     useEffect(()=>{
-        axios.get(`${process.env.REACT_APP_API_URI}/hashtag`)
+        api.getTrends(user?.token)
         .then(r=>setTrends(r.data))
         .catch(error=>console.log(error.message))
     },[])

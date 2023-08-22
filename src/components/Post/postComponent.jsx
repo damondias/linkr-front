@@ -21,7 +21,7 @@ export default function Post({ url, postId, title, description, image, message, 
     const { user } = useAuth();
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
-    const [userLiked, setUserLiked] = useState([]);
+    const [userLiked, setUserLiked] = useState(false)
 
     const [isDeleting, setDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -54,8 +54,8 @@ export default function Post({ url, postId, title, description, image, message, 
          promise.then(resposta => {
             setLikes(resposta.data.count);
             setText(resposta.data.text)
-            if(resposta.data.user !== null){
-                setUserLiked([...userLiked, resposta.data.user])
+            if(resposta.data.userLiked){
+                setUserLiked(true)
             }
         })
         promise.catch((erro) => {
@@ -65,7 +65,7 @@ export default function Post({ url, postId, title, description, image, message, 
 
     useEffect(getLikes, [user.postId, postId, url, user])
 
-    function like(p){
+    function like(){
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
         promise.then(resposta => {
             console.log(resposta.data)
@@ -113,11 +113,11 @@ export default function Post({ url, postId, title, description, image, message, 
                     <img src={profilePic ? profilePic : default_profile_pic} />
                 </UserPicture>
                 <SCContainerLikes>
-                    {userLiked.includes(postId) ? <SCLike onClick={() => like(postId)}/> : <SCDislike onClick={() => like(postId)}/>}
+                    {userLiked === true ? <SCLike onClick={() => like()}/> : <SCDislike onClick={() => like()}/>}
                     <a
                         data-tooltip-id="my-tooltip"
                         data-tooltip-place="bottom"
-                    ><SCQntdLikes>{likes}</SCQntdLikes></a>
+                    ><SCQntdLikes>{likes} likes</SCQntdLikes></a>
                     <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
                         <SCTooltipText>
                             {text}

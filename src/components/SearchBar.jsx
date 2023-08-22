@@ -3,17 +3,19 @@ import { DebounceInput } from "react-debounce-input"
 import { SearchBarBody, OptionArea } from "../styles/SearchBarStyle"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
+import useAuth from "../hooks/useAuth"
+import api from "../services/api"
 
 export default function SearchBar(){
     const nav = useNavigate()
     const location = useLocation()
     const [search,setSearch] = useState("")
     const [results,setResults] = useState([])
-    const config = {headers:{authorization:"a"}}
+    const {user} = useAuth()
 
     useEffect(()=>{
         if(search!=""){
-            axios.get(`${process.env.REACT_APP_API_URI}/users/find/${search}`,config)
+            api.getSearch(user?.token,search)
             .then(r=>{setResults(r.data)})
             .catch(error=>console.log(error.message))
         }

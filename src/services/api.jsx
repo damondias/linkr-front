@@ -47,6 +47,14 @@ async function getTrends(token) {
     return promise;
 }
 
+async function getSearch(token,search) {
+    const auth = createHeaders(token);
+
+    const promise = await axios.get(`${BASE_URL}/users/find/${search}`, auth);
+
+    return promise;
+}
+
 async function deletePost(postId, token) {
     const auth = createHeaders(token);
     console.log({token, postId})
@@ -68,6 +76,7 @@ const api = {
     getHashtagPost,
     getUsersPost,
     getTrends,
+    getSearch,
     deletePost,
     editPost,
 }

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
 const PostBody = styled.div`
-    width: 610px;
+    width: 70%;
 
     display: flex;
 
@@ -96,7 +96,7 @@ const UserMessage = styled.div`
     line-height: 20.7px;
     color: #B7B7B7;
 
-    display: ${(props) => props.editing == true ? 'none': 'inline'};
+    display: ${(props) => props.editing === true ? 'none': 'inline'};
     padding-bottom: 8px;
 
     span {

@@ -37,14 +37,13 @@ export default function Timeline(){
 
     return(
         <>
-            <>Header</>
             <MainContainer>
                 <LeftWrapper>
                     <TimelineContainer>
                         <TitleContainer>
                             timeline
                         </TitleContainer>
-                        <Publish />
+                        <Publish fetchPosts={fetchPosts} userToken={user?.token}/>
                         {isLoading
                             ? <h2> Loading ... </h2>
                             : posts?.length === 0

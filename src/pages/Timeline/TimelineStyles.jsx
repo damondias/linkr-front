@@ -12,11 +12,11 @@ const MainContainer = styled.main`
 `;
 
 const LeftWrapper = styled.div`
-    width: 60%;
+    width: 65%;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
 
     background-color: #333333;
 
@@ -26,7 +26,7 @@ const LeftWrapper = styled.div`
 `;
 
 const RightWrapper = styled.div`
-    width: 40%;
+    width: 35%;
     padding-left: 25px;
 
     display: flex;

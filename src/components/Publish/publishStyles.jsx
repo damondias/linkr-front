@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Post = styled.div`
   display: flex;
-  width: 90%;
+  width: 610px;
   height: 210px;
   background-color: #FFFFFF;
   border-radius: 16px;

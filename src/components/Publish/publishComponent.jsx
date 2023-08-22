@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Post, PostForm, PostUserInfo, PostUrl, PostDescription, ButtonPublish } from './publishStyles.jsx';
 import api from '../../services/api.jsx';
-// import useAuth from "../../Hooks/useAuth";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth.jsx';
 
-export default function Publish() {
+export default function Publish({ fetchPosts, userToken }) {
 
-    const { user } = useAuth();// contexto onde consigo os dados do id e token;
+    const { user } = useAuth();
     const [formData, setFormData] = useState({ url: '', userMessage: '' });
     const [loading, setLoading] = useState(false);
 
@@ -20,7 +19,7 @@ export default function Publish() {
         await api.createPost(formData, user?.token);
         setLoading(false);
         setFormData({});
-        window.location.reload();
+        fetchPosts(userToken);
         }
         catch (error) {
         Swal.fire({
@@ -28,7 +27,7 @@ export default function Publish() {
             title: "Couldn't publish the post",
             text: "An error occured while publishing the post. Please, try again.",
         });
-        window.location.reload();
+        setLoading(false);
         }
     }
 
@@ -39,7 +38,7 @@ export default function Publish() {
   return (
     <Post>
       <PostUserInfo>
-        <Link to={`/user/${user?.id}`}>
+        <Link to={`/user/${user?.userId}`}>
           <img src={user?.image} alt="avatar" />
         </Link>
       </PostUserInfo>

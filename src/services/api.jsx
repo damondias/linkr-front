@@ -14,11 +14,13 @@ async function createPost(body, token) {
     return promise;
 }
 
-async function getPost(token) {
+async function getPost(token, offset) {
     const auth = createHeaders(token);
 
-    const render_limit = 20;
-    const promise = await axios.get(`${BASE_URL}/posts/${render_limit}`, auth);
+    const render_limit = 10;
+    const queryParams = offset ? `?offset=${offset}` : ''; 
+
+    const promise = await axios.get(`${BASE_URL}/posts/${render_limit}${queryParams}`, auth);
 
     return promise;
 }

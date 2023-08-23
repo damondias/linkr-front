@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
     } else {
       // navigate('/');
     }
-  }, []); 
+  }, [user]); 
 
   function logOut() {
     setUser(null);

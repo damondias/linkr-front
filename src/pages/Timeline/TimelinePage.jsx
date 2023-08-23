@@ -4,6 +4,7 @@ import { LeftWrapper, MainContainer, NoPost, RightWrapper, TimelineContainer, Ti
 import api from "../../services/api";
 import TrendingComponent from "../../components/trendingComponent";
 import useAuth from "../../hooks/useAuth";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function Timeline(){
     const { user } = useAuth();
@@ -14,6 +15,10 @@ export default function Timeline(){
 
     const NoPostYetMessage = "There are no posts yet";
     const ServerErrorMessage = `An error occured while trying to fetch the posts, please refresh the page`;
+
+    const [offsetScroll, setOffsetScroll] = useState(10);
+    const [hasMore, setHasMore] = useState(true);
+
 
     function fetchPosts() {
 
@@ -33,7 +38,27 @@ export default function Timeline(){
         });
     }
 
-    useEffect(fetchPosts, []);
+    useEffect(fetchPosts, [user?.token
+    ]);
+
+    const loadPosts = async () => {
+        const loadMorePosts = await api.getPost(user?.token, offsetScroll);
+
+        return loadMorePosts;
+    }
+
+    const loadFunc = async () => {
+        const { data: morePosts } = await loadPosts();
+
+        console.log(morePosts.length);
+        if (morePosts.length < 10) {
+            setPosts(posts.concat(morePosts));
+            return setHasMore(false);
+        }
+
+        setPosts(posts.concat(morePosts));
+        setOffsetScroll(offsetScroll + 10);
+    }
 
     return(
         <>
@@ -51,20 +76,28 @@ export default function Timeline(){
                                 : error === true
                                     ? <NoPost>{ServerErrorMessage}</NoPost>
                                     : (
-                                        posts?.map((post) =>
-                                            <Post
-                                                key={post.id}
-                                                postId={post.id}
-                                                url={post.url}
-                                                title={post.urlTitle}
-                                                description={post.urlDescription}
-                                                image={post.urlImage}
-                                                message={post.message}
-                                                name={post.name}
-                                                profilePic={post.profilePic}
-                                                userId={post.userId}
-                                            />
-                                        )
+                                        <InfiniteScroll
+                                            className='infinite-scroll'
+                                            pageStart={0}
+                                            loadMore={loadFunc}
+                                            hasMore={hasMore}
+                                            loader={<div className="loader" key={0}>Loading ... </div>}
+                                        >
+                                            {posts?.map((post,index) =>
+                                                <Post
+                                                    key={index}
+                                                    postId={post.id}
+                                                    url={post.url}
+                                                    title={post.urlTitle}
+                                                    description={post.urlDescription}
+                                                    image={post.urlImage}
+                                                    message={post.message}
+                                                    name={post.name}
+                                                    profilePic={post.profilePic}
+                                                    userId={post.userId}
+                                                />
+                                            )}
+                                        </InfiniteScroll>
                                     )}
                     </TimelineContainer>
                 </LeftWrapper>

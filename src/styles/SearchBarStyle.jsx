@@ -11,6 +11,7 @@ export const SearchBarBody = styled.div`
     @media (min-width: 376px) {
         position: fixed;
         left: 50%;
+        top: 0;
         transform: translate(-50%, 0);
         z-index: 3;
         background-color: transparent;

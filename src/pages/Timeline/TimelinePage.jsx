@@ -92,9 +92,11 @@ export default function Timeline(){
                                                     description={post.urlDescription}
                                                     image={post.urlImage}
                                                     message={post.message}
-                                                    name={post.name}
+                                                    name={post.username}
                                                     profilePic={post.profilePic}
                                                     userId={post.userId}
+                                                    repUserId={post.repUserId}
+                                                    reposts={post.reposts}
                                                 />
                                             )}
                                         </InfiniteScroll>

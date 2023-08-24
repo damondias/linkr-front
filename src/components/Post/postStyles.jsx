@@ -2,18 +2,22 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
 const PostBody = styled.div`
-    width: 70%;
+    width: 100%;
+    min-height: 276px;
 
     display: flex;
 
     padding: 18px 17px;
-    margin-top: 16px;
     border-radius: 16px;
 
     background-color: #171717;
     font-family: "Lato", sans-serif;
 
     position: relative;
+
+    box-sizing: border-box;
+    
+    z-index:10;
 
     @media (max-width: 610px) {
         width: 100%;

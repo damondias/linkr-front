@@ -31,9 +31,9 @@ export default function Comment(){
 }
 
 const SCContainer = styled.div`
-    width: 73%;
+    width: 100%;
     background-color: #1E1E1E;
-    border-radius: 16px;
+    border-radius: 0px 0px 16px 16px;
     border: none;
 
     padding: 19px 25px 16px 25px;
@@ -55,7 +55,7 @@ const SCNewComment = styled.div`
     display: flex;
     align-items: center;
 
-    border-radius: 16px;
+    border-radius: 0px 0px 16px 16px;
 
     background-color: #1e1e1e;
 

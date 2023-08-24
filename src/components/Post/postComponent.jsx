@@ -3,20 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Metadata from "./Metadata/metadataComponent";
 import { MetadataContainer, PostBody, TextContainer, UserContainer, UserMessage, UserName, UserPicture } from "./postStyles";
 import default_profile_pic from "../../assets/blank-profile-picture.png";
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiFillHeart } from 'react-icons/ai';
-import { Tooltip } from 'react-tooltip'
 import styled from 'styled-components'
 import { Tagify } from 'react-tagify'
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
-import { FaPencilAlt } from 'react-icons/fa';
-import { TbTrashFilled } from 'react-icons/tb'
-import { AiOutlineComment } from 'react-icons/ai'
 import DeletePost from "./Delete/DeleteComponent";
 import api from "../../services/api";
 import Comment from "../comment";
+import { SCComments, SCContainerComment, SCContainerLikes, SCContainerShares, SCDelete, SCDislike, SCEdit, SCLike, SCQntdComments, SCQntdLikes, SCQntdShares, SCShares, SCTooltip, SCTooltipText } from "./LikeCommentShare/IconsStyles";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
@@ -108,7 +103,7 @@ export default function Post({ url, postId, title, description, image, message, 
     }
 
     return (
-        <>
+        <SCContatinerTotal>
             <PostBody>
                 <UserContainer>
                     {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
@@ -131,6 +126,10 @@ export default function Post({ url, postId, title, description, image, message, 
                         <SCComments />
                         <SCQntdComments>11 comments</SCQntdComments>
                     </SCContainerComment>
+                    <SCContainerShares>
+                        <SCShares />
+                        <SCQntdShares>11 re-posts</SCQntdShares>
+                    </SCContainerShares>
                 </UserContainer>
                 <TextContainer>
                     <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
@@ -171,114 +170,41 @@ export default function Post({ url, postId, title, description, image, message, 
                 <SCEdit userPost={userId === user.userId} onClick={toggleEdit} />
             </PostBody>
             <Comment profilePic={profilePic}/>
-        </>
+            <SCBackground />
+        </SCContatinerTotal>
     );
 }
 
+const SCContatinerTotal = styled.div`
+    width: 74.2%;
 
-const SCContainerLikes = styled.div`
-    width: 60px;
-    height: 33px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
 
-    margin-top: 10px;
-`
+    margin-top: 16px;
+    border-radius: 16px;
 
-const SCLike = styled(AiFillHeart)`
-    width: 20px;
-    height: 18px;
-    color: #AC0000;
-    cursor: pointer;
-`
-
-const SCDislike = styled(AiOutlineHeart)`
-    width: 20px;
-    height: 18px;
-    color: #ffffff;
-    cursor: pointer;
-`
-
-const SCQntdLikes = styled.p`
     font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-size: 11px;
-    color: #ffffff;
-    cursor: default;
+
+    position: relative;
+    z-index:0;
+
+    @media (max-width: 610px) {
+        width: 100%;
+        border-radius: 0;
+    }
 `
 
-const SCTooltip = styled(Tooltip)`
-    box-shadow: 0px 4px 4px 0px #0000000D;
+const SCBackground = styled.div`
     width: 100%;
-    height: 10px;
-    border-radius: 3px;
-    opacity: 0.9;
-    color: #ffffff;
+    min-height: 276px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-
-const SCTooltipText = styled.p`
-    font-family: "Lato", sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 13px;
-    color:#505050;
-`
-
-const SCContainerComment = styled.div`
-    width: 67px;
-    height: 33px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-top: 10px;
-`
-
-const SCComments = styled(AiOutlineComment)`
-     width: 20px;
-    height: 18px;
-    color: #ffffff;
-    cursor: pointer;
-`
-
-const SCQntdComments = styled.p`
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-size: 11px;
-    color: #ffffff;
-    cursor: default;
-`
-
-const SCDelete = styled(TbTrashFilled)`
-    width: 20px;
-    height: 18px;
     position: absolute;
+    top: 0;
+    left: 0;
 
-    color: #ffffff;
-    top: 15px;
-    right: 15px;
+    border-radius: 16px 16px 0px 0px;
 
-    cursor: pointer;
-
-    display: ${props => props.userPost ? 'block' : 'none'}
-`
-
-const SCEdit = styled(FaPencilAlt)`
-    width: 20px;
-    height: 18px;   
-    position: absolute;
-
-    color: #ffffff;
-    top: 15px;
-    right: 45px;
-
-    cursor: pointer;
-    display: ${props => props.userPost ? 'block' : 'none'} 
+    background-color: #1E1E1E;
+    z-index:1;
 `

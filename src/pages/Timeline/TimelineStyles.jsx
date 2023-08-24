@@ -54,6 +54,7 @@ const TimelineContainer = styled.div`
         display: flex; 
         flex-direction: column; 
         align-items: flex-end; 
+        gap: 20px;
     }
 
     .loader {

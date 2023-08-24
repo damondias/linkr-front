@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import useAuth from '../../Hooks/useAuth';
 import Metadata from "./Metadata/metadataComponent";
-import { MetadataContainer, PostBody, TextContainer, UserContainer, UserMessage, UserName, UserPicture } from "./postStyles";
+import { PostDiv, MetadataContainer, PostBody, RepostTitle, TextContainer, UserContainer, UserMessage, UserName, UserPicture, RepostButton } from "./postStyles";
 import default_profile_pic from "../../assets/blank-profile-picture.png";
 import styled from 'styled-components'
 import { Tagify } from 'react-tagify'
@@ -13,7 +13,7 @@ import api from "../../services/api";
 import Comment from "../comment";
 import { SCComments, SCContainerComment, SCContainerLikes, SCContainerShares, SCDelete, SCDislike, SCEdit, SCLike, SCQntdComments, SCQntdLikes, SCQntdShares, SCShares, SCTooltip, SCTooltipText } from "./LikeCommentShare/IconsStyles";
 
-export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
+export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
 
     const { user } = useAuth();
     const [ likes, setLikes ] = useState(0);
@@ -103,6 +103,7 @@ export default function Post({ url, postId, title, description, image, message, 
     }
 
     return (
+<<<<<<< HEAD
         <SCContatinerTotal>
             <PostBody>
                 <UserContainer>
@@ -140,6 +141,44 @@ export default function Post({ url, postId, title, description, image, message, 
                     </UserMessage>
                     <span>{
                         isEditing &&
+=======
+        <PostDiv>
+            {
+                repUserId!=null?<RepostTitle>reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+            }
+        <PostBody>
+            <UserContainer>
+                {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
+                <UserPicture>
+                    <img src={profilePic ? profilePic : default_profile_pic} />
+                </UserPicture>
+                <SCContainerLikes>
+                    {userLiked === true ? <SCLike onClick={() => like()}/> : <SCDislike onClick={() => like()}/>}
+                    <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-place="bottom"
+                    ><SCQntdLikes>{likes} likes</SCQntdLikes></a>
+                    <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
+                        <SCTooltipText>
+                            {text}
+                        </SCTooltipText>
+                    </SCTooltip>
+                </SCContainerLikes>
+                <RepostButton>
+                    <ion-icon name="repeat-sharp"></ion-icon>
+                    {reposts==null?0:reposts} re-posts
+                </RepostButton>
+            </UserContainer>
+            <TextContainer>
+                <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
+                <UserMessage editing={isEditing}>
+                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}} color="#ffffff">
+                      {message}  
+                    </Tagify>
+                </UserMessage>
+                <span>{
+                    isEditing &&
+>>>>>>> 4085d0afab12f08f820925b4db7d49ef899d6dc6
                         (
                             <form onSubmit={editPost} onKeyDown={verifyEsc}>
                                 <input
@@ -152,6 +191,7 @@ export default function Post({ url, postId, title, description, image, message, 
                             </form>
                         )
                     }
+<<<<<<< HEAD
                     </span>
 
                     <MetadataContainer>
@@ -172,6 +212,26 @@ export default function Post({ url, postId, title, description, image, message, 
             <Comment profilePic={profilePic}/>
             <SCBackground />
         </SCContatinerTotal>
+=======
+                </span>
+ 
+                <MetadataContainer>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                        <Metadata
+                            url={url}
+                            postId={postId}
+                            title={title}
+                            description={description}
+                            image={image}
+                        />
+                    </a>
+                </MetadataContainer>
+            </TextContainer>
+            <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
+            <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
+        </PostBody>
+        </PostDiv>
+>>>>>>> 4085d0afab12f08f820925b4db7d49ef899d6dc6
     );
 }
 

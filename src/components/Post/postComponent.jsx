@@ -13,8 +13,10 @@ import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { FaPencilAlt } from 'react-icons/fa';
 import { TbTrashFilled } from 'react-icons/tb'
+import { AiOutlineComment } from 'react-icons/ai'
 import DeletePost from "./Delete/DeleteComponent";
 import api from "../../services/api";
+import Comment from "../comment";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
 
@@ -106,34 +108,39 @@ export default function Post({ url, postId, title, description, image, message, 
     }
 
     return (
-        <PostBody>
-            <UserContainer>
-                {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
-                <UserPicture>
-                    <img src={profilePic ? profilePic : default_profile_pic} />
-                </UserPicture>
-                <SCContainerLikes>
-                    {userLiked === true ? <SCLike onClick={() => like()}/> : <SCDislike onClick={() => like()}/>}
-                    <a
-                        data-tooltip-id="my-tooltip"
-                        data-tooltip-place="bottom"
-                    ><SCQntdLikes>{likes} likes</SCQntdLikes></a>
-                    <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
-                        <SCTooltipText>
-                            {text}
-                        </SCTooltipText>
-                    </SCTooltip>
-                </SCContainerLikes>
-            </UserContainer>
-            <TextContainer>
-                <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
-                <UserMessage editing={isEditing}>
-                    <Tagify onClick={(text, type)=> {if(type=="tag") nav(`/hashtag/${text}`)}} color="#ffffff">
-                      {message}  
-                    </Tagify>
-                </UserMessage>
-                <span>{
-                    isEditing &&
+        <>
+            <PostBody>
+                <UserContainer>
+                    {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
+                    <UserPicture>
+                        <img src={profilePic ? profilePic : default_profile_pic} />
+                    </UserPicture>
+                    <SCContainerLikes>
+                        {userLiked === true ? <SCLike onClick={() => like()} /> : <SCDislike onClick={() => like()} />}
+                        <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-place="bottom"
+                        ><SCQntdLikes>{likes} likes</SCQntdLikes></a>
+                        <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
+                            <SCTooltipText>
+                                {text}
+                            </SCTooltipText>
+                        </SCTooltip>
+                    </SCContainerLikes>
+                    <SCContainerComment>
+                        <SCComments />
+                        <SCQntdComments>11 comments</SCQntdComments>
+                    </SCContainerComment>
+                </UserContainer>
+                <TextContainer>
+                    <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
+                    <UserMessage editing={isEditing}>
+                        <Tagify onClick={(text, type) => { if (type == "tag") nav(`/hashtag/${text}`) }} color="#ffffff">
+                            {message}
+                        </Tagify>
+                    </UserMessage>
+                    <span>{
+                        isEditing &&
                         (
                             <form onSubmit={editPost} onKeyDown={verifyEsc}>
                                 <input
@@ -146,25 +153,28 @@ export default function Post({ url, postId, title, description, image, message, 
                             </form>
                         )
                     }
-                </span>
- 
-                <MetadataContainer>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                        <Metadata
-                            url={url}
-                            postId={postId}
-                            title={title}
-                            description={description}
-                            image={image}
-                        />
-                    </a>
-                </MetadataContainer>
-            </TextContainer>
-            <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
-            <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
-        </PostBody>
+                    </span>
+
+                    <MetadataContainer>
+                        <a href={url} target="_blank" rel="noopener noreferrer">
+                            <Metadata
+                                url={url}
+                                postId={postId}
+                                title={title}
+                                description={description}
+                                image={image}
+                            />
+                        </a>
+                    </MetadataContainer>
+                </TextContainer>
+                <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)} />
+                <SCEdit userPost={userId === user.userId} onClick={toggleEdit} />
+            </PostBody>
+            <Comment profilePic={profilePic}/>
+        </>
     );
 }
+
 
 const SCContainerLikes = styled.div`
     width: 60px;
@@ -218,6 +228,32 @@ const SCTooltipText = styled.p`
     font-weight: 700;
     line-height: 13px;
     color:#505050;
+`
+
+const SCContainerComment = styled.div`
+    width: 67px;
+    height: 33px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 10px;
+`
+
+const SCComments = styled(AiOutlineComment)`
+     width: 20px;
+    height: 18px;
+    color: #ffffff;
+    cursor: pointer;
+`
+
+const SCQntdComments = styled.p`
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #ffffff;
+    cursor: default;
 `
 
 const SCDelete = styled(TbTrashFilled)`

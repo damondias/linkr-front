@@ -65,6 +65,8 @@ export default function UsersPage(){
                                                 name={post.name}
                                                 profilePic={post.profilePic}
                                                 userId={post.userId}
+                                                repUserId={post.repUserId}
+                                                reposts={post.reposts}
                                             />
                                         )
                                     )}

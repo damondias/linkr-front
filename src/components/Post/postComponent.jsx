@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import useAuth from '../../Hooks/useAuth';
 import Metadata from "./Metadata/metadataComponent";
-import { MetadataContainer, PostBody, TextContainer, UserContainer, UserMessage, UserName, UserPicture } from "./postStyles";
+import { PostDiv, MetadataContainer, PostBody, RepostTitle, TextContainer, UserContainer, UserMessage, UserName, UserPicture, RepostButton } from "./postStyles";
 import default_profile_pic from "../../assets/blank-profile-picture.png";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
@@ -16,7 +16,7 @@ import { TbTrashFilled } from 'react-icons/tb'
 import DeletePost from "./Delete/DeleteComponent";
 import api from "../../services/api";
 
-export default function Post({ url, postId, title, description, image, message, name, profilePic, userId }) {
+export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
 
     const { user } = useAuth();
     const [ likes, setLikes ] = useState(0);
@@ -106,6 +106,10 @@ export default function Post({ url, postId, title, description, image, message, 
     }
 
     return (
+        <PostDiv>
+            {
+                repUserId!=null?<RepostTitle>reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+            }
         <PostBody>
             <UserContainer>
                 {isDeleting && <DeletePost isDeleting={isDeleting} setDeleting={setDeleting} postId={postId} />}
@@ -124,6 +128,10 @@ export default function Post({ url, postId, title, description, image, message, 
                         </SCTooltipText>
                     </SCTooltip>
                 </SCContainerLikes>
+                <RepostButton>
+                    <ion-icon name="repeat-sharp"></ion-icon>
+                    {reposts==null?0:reposts} re-posts
+                </RepostButton>
             </UserContainer>
             <TextContainer>
                 <UserName to={`/user/${userId}`} className="username-post">{name}</UserName>
@@ -163,6 +171,7 @@ export default function Post({ url, postId, title, description, image, message, 
             <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
             <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
+        </PostDiv>
     );
 }
 

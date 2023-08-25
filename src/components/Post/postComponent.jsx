@@ -30,7 +30,6 @@ import ConfirmRepost from "../ConfirmRepost";
 
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
-
     const { user } = useAuth();
 
     // Variáveis Like
@@ -182,6 +181,7 @@ export default function Post({ url, postId, title, description, image, message, 
     function repost(){
         setReposting(true)
     }
+    console.log(repUserId)
 
     return (
         <PostDiv>

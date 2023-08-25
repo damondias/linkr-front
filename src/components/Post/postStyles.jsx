@@ -15,6 +15,8 @@ const PostBody = styled.div`
 
     position: relative;
 
+    z-index:3;
+
     @media (max-width: 610px) {
         width: 100%;
         border-radius: 0;

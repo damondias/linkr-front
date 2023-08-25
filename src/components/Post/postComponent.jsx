@@ -246,6 +246,7 @@ export default function Post({ url, postId, title, description, image, message, 
                         <SCSend />
                     </SCNewComment>
                 </SCContainerComments>
+                <SCBackground />
         </PostDiv>
     );
 }
@@ -259,6 +260,21 @@ const SCContainerLikes = styled.div`
     align-items: center;
 
     margin-top: 10px;
+    z-index:3;
+`
+
+const SCBackground = styled.div`
+    width: 100%;
+    min-height: 340px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border-radius: 16px 16px 0px 0px;
+
+    background-color: #1E1E1E;
+    z-index:1;
 `
 
 const SCContainerComments = styled.div`
@@ -291,6 +307,8 @@ border-radius: 0px 0px 16px 16px;
 background-color: #1e1e1e;
 
 position: relative;
+
+z-index:3;
 `
 
 const SCPicture = styled.div`

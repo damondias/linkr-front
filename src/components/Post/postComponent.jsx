@@ -24,6 +24,9 @@ import { SCContainerComment } from "../StyleIcons.jsx";
 import { SCComments } from "../StyleIcons.jsx";
 import { SCQntdComments } from "../StyleIcons.jsx";
 import { SCShares } from "../StyleIcons.jsx";
+import { PiPaperPlaneTilt } from 'react-icons/pi'
+import Comment from "../Comment";
+
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
 
@@ -35,6 +38,7 @@ export default function Post({ url, postId, title, description, image, message, 
     const [isDeleting, setDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [textToEdit, setTextToEdit] = useState(message);
+    const [comment, setComment] = useState('')
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -184,6 +188,21 @@ export default function Post({ url, postId, title, description, image, message, 
             <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
             <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
+        <SCContainerComments>
+                    <Comment profilePic={profilePic}/>
+                    <SCNewComment>
+                        <SCPicture>
+                            <img src={user.image ? user.image : default_profile_pic} />
+                        </SCPicture>
+                        <SCInput
+                            type='text'
+                            placeholder='write a comment...'
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                        <SCSend />
+                    </SCNewComment>
+                </SCContainerComments>
         </PostDiv>
     );
 }
@@ -197,4 +216,87 @@ const SCContainerLikes = styled.div`
     align-items: center;
 
     margin-top: 10px;
+`
+
+const SCContainerComments = styled.div`
+width: 100%;
+background-color: #1E1E1E;
+border-radius: 0px 0px 16px 16px;
+border: none;
+
+padding: 19px 25px 16px 25px;
+
+box-sizing: border-box;
+
+@media (max-width: 610px) {
+width: 100%;
+border-radius: 0;
+
+padding: 15px 9px;
+}
+`
+
+const SCNewComment = styled.div`
+width: 100%;
+height: 83px;
+
+display: flex;
+align-items: center;
+
+border-radius: 0px 0px 16px 16px;
+
+background-color: #1e1e1e;
+
+position: relative;
+`
+
+const SCPicture = styled.div`
+& > * {
+width: 30px;
+height: 30px;
+
+border-radius: 50%;
+
+border: 1px solid white
+}
+
+@media (max-width: 610px) {
+& > * {
+width: 30px;
+height: 30px;
+}
+}
+`;
+
+const SCInput = styled.input`
+width: 100%;
+height: 39px;
+margin-left: 14px;
+
+border-radius: 8px;
+
+background-color: #252525;
+border: none;
+
+color: #575757;
+font-style: italic;
+
+outline: none;
+
+padding-left: 15px;
+`
+
+const SCSend = styled(PiPaperPlaneTilt)`
+width: 15px;
+height: 15px;
+
+color: #F3F3F3;
+
+position: absolute;
+z-index: 15;
+
+top: 34px;
+right: 15px;
+
+cursor: pointer;
 `

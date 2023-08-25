@@ -10,8 +10,6 @@ export default function TrendingComponent(){
     const [trends,setTrends] = useState([])
     const {user} = useAuth()
 
-    console.log(user)
-
     useEffect(()=>{
         api.getTrends(user?.token)
         .then(r=>setTrends(r.data))

@@ -119,7 +119,7 @@ const SCDelete = styled(TbTrashFilled)`
     position: absolute;
 
     color: #ffffff;
-    top: 15px;
+    top: 8px;
     right: 15px;
 
     cursor: pointer;
@@ -133,7 +133,7 @@ const SCEdit = styled(FaPencilAlt)`
     position: absolute;
 
     color: #ffffff;
-    top: 15px;
+    top: 8px;
     right: 45px;
 
     cursor: pointer;

@@ -26,6 +26,7 @@ import { SCQntdComments } from "../StyleIcons.jsx";
 import { SCShares } from "../StyleIcons.jsx";
 import { PiPaperPlaneTilt } from 'react-icons/pi'
 import Comment, { SCCommentComments, SCContainerCommentarios, SCInfosComments, SCNameComments, SCPictureComments, SCTitleComments, SCtextComments } from "../Comment";
+import ConfirmRepost from "../ConfirmRepost";
 
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
@@ -35,18 +36,22 @@ export default function Post({ url, postId, title, description, image, message, 
     // Variáveis Like
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
-    const [userLiked, setUserLiked] = useState(false)
+    const [userLiked, setUserLiked] = useState(false);
+    const [sendLike, setSendLike] = useState('')
 
     // Variáveis Comments
     const [comment, setComment] = useState('');
     const [countComments, setCountComments] = useState(0);
     const [dataComments, setDataComments] = useState([]);
     const [followingComments, setFollowingComments] = useState([]);
+    const [selected, setSelected] = useState([])
 
     //Variáveis Delete and Edit
     const [isDeleting, setDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [textToEdit, setTextToEdit] = useState(message);
+
+    const [isReposting, setReposting] = useState(false)
     
     const inputRef = useRef(null);
 
@@ -62,7 +67,7 @@ export default function Post({ url, postId, title, description, image, message, 
 
     const data = {
         userId: user.userId,
-        postId
+        postId: postId
     }
 
     const config = {
@@ -74,10 +79,15 @@ export default function Post({ url, postId, title, description, image, message, 
     function getLikes(){
         const promise = axios.get(`${process.env.REACT_APP_API_URI}/likes/${postId}`, config)
          promise.then(resposta => {
+            setSendLike('Like')
             setLikes(resposta.data.count);
             setText(resposta.data.text)
             if(resposta.data.userLiked){
                 setUserLiked(true)
+                setSendLike('true')
+            }else{
+                setUserLiked(false)
+                setSendLike('')
             }
         })
         promise.catch((erro) => {
@@ -91,6 +101,7 @@ export default function Post({ url, postId, title, description, image, message, 
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
         promise.then(resposta => {
             console.log(resposta.data)
+            setSendLike('')
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
@@ -121,12 +132,13 @@ export default function Post({ url, postId, title, description, image, message, 
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/comment/${postId}`, dataComment, config)
         promise.then(resposta => {
             console.log(resposta.data)
+            setComment('')
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
         })
 
-        getLikes();
+        getComments();
     }
 
     function toggleEdit() {
@@ -157,14 +169,27 @@ export default function Post({ url, postId, title, description, image, message, 
             toggleEdit();
     }
 
-    function visibleComments(){
+    function visibleComments(id){
+        const isSelected = selected.some(s => s === id);
+            if (isSelected) {
+                const newList = selected.filter(s => s!== id);
+                setSelected(newList);
+            } else { 
+                setSelected([...selected, id]);
+            }
+    }
 
+    function repost(){
+        setReposting(true)
     }
 
     return (
         <PostDiv>
             {
-                repUserId!=null?<RepostTitle>reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+                repUserId!=null?<RepostTitle><SCShares/> reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+            }
+            {
+                isReposting?<ConfirmRepost postId={postId} function={setReposting}/>:""
             }
         <PostBody>
             <UserContainer>
@@ -185,10 +210,10 @@ export default function Post({ url, postId, title, description, image, message, 
                     </SCTooltip>
                 </SCContainerLikes>
                 <SCContainerComment>
-                        <SCComments onClick={() => visibleComments()}/>
+                        <SCComments onClick={() => visibleComments(postId)}/>
                         <SCQntdComments>{countComments} comments</SCQntdComments>
                 </SCContainerComment>
-                <RepostButton>
+                <RepostButton onClick={()=>repost()}>
                     <SCShares />
                     {reposts==null?0 :reposts } re-posts
                 </RepostButton>
@@ -231,10 +256,10 @@ export default function Post({ url, postId, title, description, image, message, 
             <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
             <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
-        <SCContainerComments visible={''}>
+        <SCContainerComments visible={selected.includes(postId)}>
                     {dataComments.length === 0 ? '' :
                         (dataComments.map((c, i) => 
-                            <SCContainerCommentarios key={i}>
+                            <SCContainerCommentarios key={i} visible={selected.includes(postId)}>
                             <SCPictureComments src={c.image}/>
                             <SCtextComments>
                                 <SCTitleComments>
@@ -254,7 +279,7 @@ export default function Post({ url, postId, title, description, image, message, 
                             </SCtextComments>
                         </SCContainerCommentarios>
                         ))}
-                    <SCNewComment>
+                    <SCNewComment visible={selected.includes(postId)}>
                         <SCPicture>
                             <img src={user.image ? user.image : default_profile_pic} />
                         </SCPicture>
@@ -267,7 +292,7 @@ export default function Post({ url, postId, title, description, image, message, 
                         <SCSend onClick={() => commentPost()}/>
                     </SCNewComment>
                 </SCContainerComments>
-                <SCBackground />
+                <SCBackground visible={selected.includes(postId)}/>
         </PostDiv>
     );
 }
@@ -296,91 +321,95 @@ const SCBackground = styled.div`
 
     background-color: #1E1E1E;
     z-index:0;
+
+    display: ${props => props.visible ? 'block' : 'none'}
 `
 
 const SCContainerComments = styled.div`
-width: 100%;
-background-color: #1E1E1E;
-border-radius: 0px 0px 16px 16px;
-border: none;
+    width: 100%;
+    background-color: #1E1E1E;
+    border-radius: 0px 0px 16px 16px;
+    border: none;
 
-padding: 25px 25px 16px 25px;
+    padding: 25px 25px 16px 25px;
 
-box-sizing: border-box;
+    box-sizing: border-box;
 
-@media (max-width: 610px) {
-width: 100%;
-border-radius: 0;
+    display: ${props => props.visible ? 'block' : 'none'};
 
-padding: 15px 9px;
+    @media (max-width: 610px) {
+    width: 100%;
+    border-radius: 0;
 
-z-index: 4;
-}
+    padding: 15px 9px;
+
+    z-index: 4;
+    }
 `
 
 const SCNewComment = styled.div`
-width: 100%;
-height: 83px;
+    width: 100%;
+    height: 83px;
 
-display: flex;
-align-items: center;
+    display: ${props => props.visible ? 'flex' : 'none'};
+    align-items: center;
 
-border-radius: 0px 0px 16px 16px;
+    border-radius: 0px 0px 16px 16px;
 
-background-color: #1e1e1e;
+    background-color: #1e1e1e;
 
-position: relative;
+    position: relative;
 
-z-index:2;
+    z-index:2;
 `
 
 const SCPicture = styled.div`
-& > * {
-width: 30px;
-height: 30px;
+    & > * {
+    width: 30px;
+    height: 30px;
 
-border-radius: 50%;
+    border-radius: 50%;
 
-border: 1px solid white
-}
+    border: 1px solid white
+    }
 
-@media (max-width: 610px) {
-& > * {
-width: 30px;
-height: 30px;
-}
-}
+    @media (max-width: 610px) {
+    & > * {
+    width: 30px;
+    height: 30px;
+    }
+    }
 `;
 
 const SCInput = styled.input`
-width: 100%;
-height: 39px;
-margin-left: 14px;
+    width: 100%;
+    height: 39px;
+    margin-left: 14px;
 
-border-radius: 8px;
+    border-radius: 8px;
 
-background-color: #252525;
-border: none;
+    background-color: #252525;
+    border: none;
 
-color: #575757;
-font-style: italic;
+    color: #575757;
+    font-style: italic;
 
-outline: none;
+    outline: none;
 
-padding-left: 15px;
+    padding-left: 15px;
 `
 
 const SCSend = styled(PiPaperPlaneTilt)`
-width: 15px;
-height: 15px;
+    width: 15px;
+    height: 15px;
 
-color: #F3F3F3;
+    color: #F3F3F3;
 
-position: absolute;
-z-index: 15;
+    position: absolute;
+    z-index: 15;
 
-top: 34px;
-right: 15px;
+    top: 34px;
+    right: 15px;
 
-cursor: pointer;
+    cursor: pointer;
 `

@@ -7,6 +7,9 @@ export const TrendingBody = styled.div`
     background-color: #171717;
     border-radius: 16px;
     padding: 5px 0;
+    color:white;
+
+    margin-top: 120px;
 
     .title{
         font-size: 27px;
@@ -16,6 +19,7 @@ export const TrendingBody = styled.div`
     p{
         padding: 5px 20px;
         font-size: 19px;
+        cursor: pointer;
     }
 
     hr{

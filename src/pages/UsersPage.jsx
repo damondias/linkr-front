@@ -6,6 +6,7 @@ import TrendingComponent from "../components/trendingComponent";
 import { useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import InfiniteScroll from "react-infinite-scroller";
+import { styled } from "styled-components";
 
 export default function UsersPage(){
     const { user } = useAuth();
@@ -60,6 +61,8 @@ export default function UsersPage(){
         setPosts(posts.concat(morePosts));
         setOffsetScroll(offsetScroll + 10);
     }
+    
+    const following = []
 
     return(
         <>
@@ -93,7 +96,7 @@ export default function UsersPage(){
                                                     image={post.urlImage}
                                                     message={post.message}
                                                     name={post.name}
-                                                    profilePic={post.profilePic}
+                                                    profilePic={post.image}
                                                     userId={post.userId}
                                                     repUserId={post.repUserId}
                                                     reposts={post.reposts}
@@ -107,6 +110,33 @@ export default function UsersPage(){
                     <TrendingComponent/>
                 </RightWrapper>
         </MainContainer>
+        <SCFollow>{following.includes(id) ? 'Unfollow' : 'Follow'}</SCFollow>
         </>        
     );
 }
+
+const SCFollow = styled.div`
+    width: 112px;
+    height: 31px;
+    
+    background-color: #1877F2;
+
+    border-radius: 5px;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 120px;
+    left: 1060px;
+
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #F3F3F3;
+
+    cursor: pointer;
+`

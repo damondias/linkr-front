@@ -27,9 +27,8 @@ export default function UsersPage(){
         setLoading(true);
 
         api.getUsersPost(user?.token,id).then(res => {
-
-            setPosts(res.data);
-            setOwner(res.data[0]);
+            setPosts(res.data.posts);
+            setOwner(res.data.info[0]);
             setLoading(false);
 
         }).catch(error => {
@@ -110,7 +109,7 @@ export default function UsersPage(){
                     <TrendingComponent/>
                 </RightWrapper>
         </MainContainer>
-        <SCFollow>{following.includes(id) ? 'Unfollow' : 'Follow'}</SCFollow>
+        <SCFollow>{owner.follows ? 'Unfollow' : 'Follow'}</SCFollow>
         </>        
     );
 }

@@ -138,7 +138,7 @@ const RepostButton = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 19px;
     font-family: Lato;
     font-size: 11px;
     font-weight: 400;

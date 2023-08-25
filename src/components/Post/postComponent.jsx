@@ -15,6 +15,15 @@ import { FaPencilAlt } from 'react-icons/fa';
 import { TbTrashFilled } from 'react-icons/tb'
 import DeletePost from "./Delete/DeleteComponent";
 import api from "../../services/api";
+import { SCDelete, SCEdit, SCLike } from "../StyleIcons.jsx";
+import { SCDislike } from "../StyleIcons.jsx";
+import { SCQntdLikes } from "../StyleIcons.jsx";
+import { SCTooltip } from "../StyleIcons.jsx";
+import { SCTooltipText } from "../StyleIcons.jsx";
+import { SCContainerComment } from "../StyleIcons.jsx";
+import { SCComments } from "../StyleIcons.jsx";
+import { SCQntdComments } from "../StyleIcons.jsx";
+import { SCShares } from "../StyleIcons.jsx";
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
 
@@ -119,17 +128,21 @@ export default function Post({ url, postId, title, description, image, message, 
                 <SCContainerLikes>
                     {userLiked === true ? <SCLike onClick={() => like()}/> : <SCDislike onClick={() => like()}/>}
                     <a
-                        data-tooltip-id="my-tooltip"
+                        data-tooltip-id={String(postId)}
                         data-tooltip-place="bottom"
                     ><SCQntdLikes>{likes} likes</SCQntdLikes></a>
-                    <SCTooltip id='my-tooltip' style={{ backgroundColor: "#ffffff" }}>
+                    <SCTooltip id={String(postId)} style={{ backgroundColor: "#ffffff" }}>
                         <SCTooltipText>
                             {text}
                         </SCTooltipText>
                     </SCTooltip>
                 </SCContainerLikes>
+                <SCContainerComment>
+                        <SCComments />
+                        <SCQntdComments>11 comments</SCQntdComments>
+                </SCContainerComment>
                 <RepostButton>
-                    <ion-icon name="repeat-sharp"></ion-icon>
+                    <SCShares />
                     {reposts==null?0:reposts} re-posts
                 </RepostButton>
             </UserContainer>
@@ -184,74 +197,4 @@ const SCContainerLikes = styled.div`
     align-items: center;
 
     margin-top: 10px;
-`
-
-const SCLike = styled(AiFillHeart)`
-    width: 20px;
-    height: 18px;
-    color: #AC0000;
-    cursor: pointer;
-`
-
-const SCDislike = styled(AiOutlineHeart)`
-    width: 20px;
-    height: 18px;
-    color: #ffffff;
-    cursor: pointer;
-`
-
-const SCQntdLikes = styled.p`
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-size: 11px;
-    color: #ffffff;
-    cursor: default;
-`
-
-const SCTooltip = styled(Tooltip)`
-    box-shadow: 0px 4px 4px 0px #0000000D;
-    width: 100%;
-    height: 10px;
-    border-radius: 3px;
-    opacity: 0.9;
-    color: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-
-const SCTooltipText = styled.p`
-    font-family: "Lato", sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 13px;
-    color:#505050;
-`
-
-const SCDelete = styled(TbTrashFilled)`
-    width: 20px;
-    height: 18px;
-    position: absolute;
-
-    color: #ffffff;
-    top: 15px;
-    right: 15px;
-
-    cursor: pointer;
-
-    display: ${props => props.userPost ? 'block' : 'none'}
-`
-
-const SCEdit = styled(FaPencilAlt)`
-    width: 20px;
-    height: 18px;   
-    position: absolute;
-
-    color: #ffffff;
-    top: 15px;
-    right: 45px;
-
-    cursor: pointer;
-    display: ${props => props.userPost ? 'block' : 'none'} 
 `

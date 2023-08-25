@@ -135,6 +135,8 @@
                                                         name={post.username}
                                                         profilePic={post.profilePic}
                                                         userId={post.userId}
+                                                        repUserId={post.repUserId}
+                                                        reposts={post.reposts}
                                                     />
                                                 )}
                                             </InfiniteScroll>

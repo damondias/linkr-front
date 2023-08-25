@@ -95,7 +95,7 @@ export default function UsersPage(){
                                                     image={post.urlImage}
                                                     message={post.message}
                                                     name={post.username}
-                                                    profilePic={post.image}
+                                                    profilePic={post.profilePic}
                                                     userId={post.userId}
                                                     repUserId={post.repUserId}
                                                     reposts={post.reposts}

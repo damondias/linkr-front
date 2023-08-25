@@ -28,6 +28,7 @@ const LeftWrapper = styled.div`
 const RightWrapper = styled.div`
     width: 35%;
     padding-left: 25px;
+    padding-top: 25px;
 
     display: flex;
     flex-direction: column;

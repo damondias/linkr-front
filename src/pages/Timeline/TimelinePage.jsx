@@ -5,8 +5,8 @@
     import TrendingComponent from "../../components/trendingComponent";
     import useAuth from "../../hooks/useAuth";
     import InfiniteScroll from "react-infinite-scroller";
-    import useInterval from 'use-interval';
     import { IoRepeatSharp } from 'react-icons/io5';
+    import useInterval from "use-interval";
     
     export default function Timeline(){
         const { user } = useAuth();
@@ -22,16 +22,32 @@
         const [hasMore, setHasMore] = useState(true);
 
         const [newPosts, setNewPosts] = useState([]);
-        const [lastPostTime, setLastPostTime] = useState();
+        const [lastPostCreatedAt, setLastPostCreatedAt] = useState();
+       
+        useEffect(() => {
+            fetchPosts();
+        }, [fetchPosts]);
+
+        useEffect(() => {
+            if (newPosts.length > 0) {
+                setPosts([...newPosts, ...posts]);
+                setNewPosts([]);
+            }
+        }, [newPosts, posts]);
         
         function fetchPosts() {
 
-            setLoading(true);
+            // setLoading(true);
 
             api.getPost(user?.token).then(res => {
 
                 setPosts(res.data);
                 setLoading(false);
+
+                if (res.data.length > 0) {
+                    setLastPostCreatedAt(res.data[0].createdAt);
+                }
+                startCheckingForNewPosts();
 
             }).catch(error => {
 
@@ -45,32 +61,38 @@
         useEffect(fetchPosts, [user?.token]);
 
         function getNewPosts() {
-            console.log('console 02: getting more posts')
             api.getPost(user?.token)
                 .then(res => verifyNewPosts(res.data))
                 .catch(error => console.log(error));
-                
         }
     
         function verifyNewPosts(incomingPosts) {
-            const areAnyNew = incomingPosts.filter(post => post.id > lastPostTime);
-            console.log(  { news: areAnyNew, posts : {incomingPosts}})
-            if (areAnyNew.length > 0) {
-                const newestPostId = areAnyNew[areAnyNew.length - 1]?.id;
-                setLastPostTime(newestPostId);
-                setNewPosts(areAnyNew);
+            const newPosts = incomingPosts.filter(post => new Date(post.createdAt) > new Date(lastPostCreatedAt));
+            console.log({ news: newPosts, incomingPosts });
+            if (newPosts.length > 0) {
+                const newestPostCreatedAt = newPosts.reduce((max, post) => {
+                    const postDate = new Date(post.createdAt);
+                    return (postDate > max ? postDate : max);
+                }, new Date(lastPostCreatedAt));
+                console.log("Newest post createdAt:", newestPostCreatedAt); // Add this log
+                setLastPostCreatedAt(newestPostCreatedAt);
+                console.log("Updated lastPostCreatedAt:", lastPostCreatedAt); // Add this log
+                setNewPosts(newPosts);
+                console.log("Updated newPosts:", newPosts); // Add this log
             }
         }
         
+
         function loadNewPosts() {
-            setPosts([...newPosts, ...posts]); // Concatena os novos posts com os existentes
+            setPosts([...newPosts, ...posts]); // Insere os novos posts no topo
             setNewPosts([]); // Limpa a lista de novos posts
         }
-        
 
-        useInterval(() => {
-            getNewPosts();
-        }, 15000);
+        function startCheckingForNewPosts() {
+            useCustomInterval(() => {
+                getNewPosts();
+            }, 15000);
+        }
 
 
         const loadPosts = async () => {
@@ -101,10 +123,10 @@
                                 timeline
                             </TitleContainer>
                             <Publish fetchPosts={fetchPosts} userToken={user?.token}/>
-                            {newPosts?.length > 0
-                                &&  <Reloader onClick={() => loadNewPosts()}>
-                                        <span>{newPosts?.length} new posts, load more! </span><IoRepeatSharp size="20px" />
-                                    </Reloader>
+                            {newPosts?.length >= 0 &&  
+                                <Reloader onClick={loadNewPosts}>
+                                    <span>{newPosts?.length} new posts, load more! </span><IoRepeatSharp size="20px" />
+                                </Reloader>
                             }
                             {isLoading
                                 ? <h2> Loading ... </h2>

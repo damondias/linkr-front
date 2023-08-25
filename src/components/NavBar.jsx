@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { NavBarBody, NavBarOptions, NavBarSearchBar, NavBarUser } from "../styles/NavBarStyle"
+import { Logo, NavBarBody, NavBarOptions, NavBarSearchBar, NavBarUser } from "../styles/NavBarStyle"
 import { useLocation } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
 
@@ -12,7 +12,7 @@ export default function NavBar(){
 
     return(
         <NavBarBody>
-            <p>linkr</p>
+            <Logo to= "/timeline">linkr</Logo>
             <NavBarUser>
                 <NavBarOptions $hidden={hidden}>
                     <ul>

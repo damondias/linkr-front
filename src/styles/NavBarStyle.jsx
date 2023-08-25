@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const NavBarBody = styled.div`
@@ -13,12 +14,16 @@ export const NavBarBody = styled.div`
     padding: 0 20px;
     box-sizing: border-box;
 
-    p{
-        color: white;
-        font-family: 'Passion One';
-        font-weight: 700;
-        font-size: 49px;
-    }
+`;
+
+export const Logo = styled(Link)`
+
+    color: white;
+    font-family: 'Passion One';
+    font-weight: 700;
+    font-size: 49px;
+
+    text-decoration: none;
 `;
 
 export const NavBarUser = styled.div`

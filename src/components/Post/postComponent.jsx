@@ -25,7 +25,7 @@ import { SCComments } from "../StyleIcons.jsx";
 import { SCQntdComments } from "../StyleIcons.jsx";
 import { SCShares } from "../StyleIcons.jsx";
 import { PiPaperPlaneTilt } from 'react-icons/pi'
-import Comment from "../Comment";
+import Comment, { SCCommentComments, SCContainerCommentarios, SCInfosComments, SCNameComments, SCPictureComments, SCTitleComments, SCtextComments } from "../Comment";
 
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
@@ -105,6 +105,9 @@ export default function Post({ url, postId, title, description, image, message, 
             setDataComments(resposta.data.comments)
             setCountComments(resposta.data.countComment)
             setFollowingComments(resposta.data.following)
+
+            console.log(dataComments)
+            console.log(followingComments)
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
@@ -183,7 +186,7 @@ export default function Post({ url, postId, title, description, image, message, 
                     </SCTooltip>
                 </SCContainerLikes>
                 <SCContainerComment>
-                        <SCComments onClick={() => commentPost()}/>
+                        <SCComments />
                         <SCQntdComments>{countComments} comments</SCQntdComments>
                 </SCContainerComment>
                 <RepostButton>
@@ -231,7 +234,22 @@ export default function Post({ url, postId, title, description, image, message, 
         </PostBody>
         <SCContainerComments>
                     {dataComments.map((c) => {
-                        <Comment following={followingComments} name={c.name}/>
+                        <SCContainerCommentarios>
+                        <SCPictureComments src={'alo'}/>
+                        <SCtextComments>
+                            <SCTitleComments>
+                                <SCNameComments>
+                                    
+                                </SCNameComments>
+                                <SCInfosComments>
+                                    • following
+                                </SCInfosComments>
+                            </SCTitleComments>
+                            <SCCommentComments>
+                                
+                            </SCCommentComments>
+                        </SCtextComments>
+                    </SCContainerCommentarios>
                     })}
                     <SCNewComment>
                         <SCPicture>
@@ -243,7 +261,7 @@ export default function Post({ url, postId, title, description, image, message, 
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                         />
-                        <SCSend />
+                        <SCSend onClick={() => commentPost()}/>
                     </SCNewComment>
                 </SCContainerComments>
                 <SCBackground />
@@ -260,7 +278,7 @@ const SCContainerLikes = styled.div`
     align-items: center;
 
     margin-top: 10px;
-    z-index:3;
+    z-index:2;
 `
 
 const SCBackground = styled.div`
@@ -274,7 +292,7 @@ const SCBackground = styled.div`
     border-radius: 16px 16px 0px 0px;
 
     background-color: #1E1E1E;
-    z-index:1;
+    z-index:0;
 `
 
 const SCContainerComments = styled.div`
@@ -308,7 +326,7 @@ background-color: #1e1e1e;
 
 position: relative;
 
-z-index:3;
+z-index:2;
 `
 
 const SCPicture = styled.div`

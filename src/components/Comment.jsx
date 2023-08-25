@@ -6,26 +6,26 @@ export default function Comment({ following, name }){
     console.log(name)
 
     return (
-            <SCContainer>
-            <SCPicture/>
-            <SCtext>
-                <SCTitle>
-                    <SCName>
+            <SCContainerCommentarios>
+            <SCPictureComments src={'alo'}/>
+            <SCtextComments>
+                <SCTitleComments>
+                    <SCNameComments>
                         
-                    </SCName>
-                    <SCInfos>
+                    </SCNameComments>
+                    <SCInfosComments>
                         • following
-                    </SCInfos>
-                </SCTitle>
-                <SCComment>
+                    </SCInfosComments>
+                </SCTitleComments>
+                <SCCommentComments>
                     
-                </SCComment>
-            </SCtext>
-        </SCContainer>
+                </SCCommentComments>
+            </SCtextComments>
+        </SCContainerCommentarios>
     )
 }
 
-const SCContainer = styled.div`
+const SCContainerCommentarios = styled.div`
     width: 100%;
     min-height: 71px;
 
@@ -35,14 +35,14 @@ const SCContainer = styled.div`
     border-bottom: 1px solid #353535;
 `
 
-const SCPicture = styled.img`
+const SCPictureComments = styled.img`
     width: 39px;
     height: 39px;
 
     border-radius: 50%;
 `
 
-const SCtext = styled.div`
+const SCtextComments = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -50,11 +50,11 @@ const SCtext = styled.div`
     margin-left: 18px;
 `
 
-const SCTitle = styled.div`
+const SCTitleComments = styled.div`
     display: flex;
 `
 
-const SCName = styled.p`
+const SCNameComments = styled.p`
     font-family: "Lato", sans-serif;
     font-size: 14px;
     font-weight: 700;
@@ -65,7 +65,7 @@ const SCName = styled.p`
     color: #F3F3F3;
 `
 
-const SCInfos = styled.p`
+const SCInfosComments = styled.p`
     font-family: "Lato", sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -76,7 +76,7 @@ const SCInfos = styled.p`
     color: #565656;
 `
 
-const SCComment = styled.p`
+const SCCommentComments = styled.p`
     font-family: "Lato", sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -86,3 +86,13 @@ const SCComment = styled.p`
 
     color: #ACACAC;
 `
+
+export {
+    SCContainerCommentarios,
+    SCPictureComments,
+    SCtextComments,
+    SCTitleComments,
+    SCNameComments,
+    SCInfosComments,
+    SCCommentComments
+}

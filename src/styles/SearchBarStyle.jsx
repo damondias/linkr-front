@@ -9,6 +9,8 @@ export const SearchBarBody = styled.div`
     margin-top: 13.5px;
     background-color: #333333;
 
+    z-index: 15;
+
     @media (min-width: 376px) {
         position: fixed;
         left: 50%;
@@ -30,6 +32,8 @@ export const SearchBarBody = styled.div`
         padding: 0 20px;
         border: 0;
         border-radius: 8px;
+
+        z-index: 15;
     }
     option{
         width:563px;

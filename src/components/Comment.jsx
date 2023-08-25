@@ -1,30 +1,5 @@
 import { styled } from "styled-components"
 
-export default function Comment({ following, name }){
-
-    console.log(following)
-    console.log(name)
-
-    return (
-            <SCContainerCommentarios>
-            <SCPictureComments src={'alo'}/>
-            <SCtextComments>
-                <SCTitleComments>
-                    <SCNameComments>
-                        
-                    </SCNameComments>
-                    <SCInfosComments>
-                        • following
-                    </SCInfosComments>
-                </SCTitleComments>
-                <SCCommentComments>
-                    
-                </SCCommentComments>
-            </SCtextComments>
-        </SCContainerCommentarios>
-    )
-}
-
 const SCContainerCommentarios = styled.div`
     width: 100%;
     min-height: 71px;
@@ -43,6 +18,7 @@ const SCPictureComments = styled.img`
 `
 
 const SCtextComments = styled.div`
+    height: 39px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

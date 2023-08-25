@@ -134,6 +134,7 @@ const RepostTitle = styled.div`
     padding-left: 10px;
     border-radius: 16px 16px 0 0;
     background-color: #1e1e1e;
+    color: white;
 `
 
 const RepostButton = styled.div`

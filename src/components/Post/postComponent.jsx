@@ -26,6 +26,7 @@ import { SCQntdComments } from "../StyleIcons.jsx";
 import { SCShares } from "../StyleIcons.jsx";
 import { PiPaperPlaneTilt } from 'react-icons/pi'
 import Comment, { SCCommentComments, SCContainerCommentarios, SCInfosComments, SCNameComments, SCPictureComments, SCTitleComments, SCtextComments } from "../Comment";
+import ConfirmRepost from "../ConfirmRepost";
 
 
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
@@ -47,6 +48,8 @@ export default function Post({ url, postId, title, description, image, message, 
     const [isDeleting, setDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [textToEdit, setTextToEdit] = useState(message);
+
+    const [isReposting, setReposting] = useState(false)
     
     const inputRef = useRef(null);
 
@@ -161,10 +164,17 @@ export default function Post({ url, postId, title, description, image, message, 
 
     }
 
+    function repost(){
+        setReposting(true)
+    }
+
     return (
         <PostDiv>
             {
-                repUserId!=null?<RepostTitle>reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+                repUserId!=null?<RepostTitle><SCShares/> reposted by {repUserId===user.userId?"you":name}</RepostTitle>:""
+            }
+            {
+                isReposting?<ConfirmRepost postId={postId} function={setReposting}/>:""
             }
         <PostBody>
             <UserContainer>
@@ -188,7 +198,7 @@ export default function Post({ url, postId, title, description, image, message, 
                         <SCComments onClick={() => visibleComments()}/>
                         <SCQntdComments>{countComments} comments</SCQntdComments>
                 </SCContainerComment>
-                <RepostButton>
+                <RepostButton onClick={()=>repost()}>
                     <SCShares />
                     {reposts==null?0 :reposts } re-posts
                 </RepostButton>

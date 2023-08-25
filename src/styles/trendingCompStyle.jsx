@@ -7,6 +7,7 @@ export const TrendingBody = styled.div`
     background-color: #171717;
     border-radius: 16px;
     padding: 5px 0;
+    color:white;
 
     .title{
         font-size: 27px;

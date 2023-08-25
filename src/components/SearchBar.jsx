@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { DebounceInput } from "react-debounce-input"
-import { SearchBarBody, OptionArea } from "../styles/SearchBarStyle"
+import { SearchBarBody, OptionArea, Icon } from "../styles/SearchBarStyle"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
 import useAuth from "../hooks/useAuth"
 import api from "../services/api"
+import {FaMagnifyingGlass} from "react-icons/fa6"
 
 export default function SearchBar(){
     const nav = useNavigate()
@@ -54,7 +55,7 @@ export default function SearchBar(){
             <form onSubmit={e=>handleSubmit(e)}>
                 <DebounceInput minLength={3} debounceTimeout={300}
                 onChange={e=>setSearch(e.target.value)} value={search}/>
-                <ion-icon name="search" onClick={()=>Send("no")}></ion-icon>
+                <Icon onClick={()=>Send("no")}></Icon>
                 <OptionArea>
                     {results.map(e=>{return(
                         <div onClick={()=>selectOption(e)}>

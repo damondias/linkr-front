@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { TrendingBody } from "../styles/trendingCompStyle"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+// import axios from "axios"
 import useAuth from "../hooks/useAuth"
 import api from "../services/api"
 
@@ -14,7 +14,7 @@ export default function TrendingComponent(){
         api.getTrends(user?.token)
         .then(r=>setTrends(r.data))
         .catch(error=>console.log(error.message))
-    },[])
+    },[user?.token])
 
     return(
         <TrendingBody>

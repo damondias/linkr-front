@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
 
 		font-family: 'Oswald', sans-serif;
 		color: #ffffff;
-		
 	}
 
 	:root{

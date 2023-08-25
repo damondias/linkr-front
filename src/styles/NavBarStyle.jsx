@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const NavBarBody = styled.div`
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     top: 0;
     width: 100vw;
     height: 72px;

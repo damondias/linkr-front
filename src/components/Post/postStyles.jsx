@@ -2,18 +2,20 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
 const PostBody = styled.div`
-    width: 70%;
+    width: 100%;
 
     display: flex;
 
     padding: 18px 17px;
-    margin-top: 16px;
     border-radius: 16px;
+    box-sizing: border-box;
 
     background-color: #171717;
     font-family: "Lato", sans-serif;
 
     position: relative;
+
+    z-index:2;
 
     @media (max-width: 610px) {
         width: 100%;
@@ -122,12 +124,54 @@ const MetadataContainer = styled.div`
     }
 `;
 
+const RepostTitle = styled.div`
+    box-sizing: border-box;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 16px 16px 0 0;
+    background-color: #1e1e1e;
+`
+
+const RepostButton = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 19px;
+    font-family: Lato;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: center;
+    ion-icon{
+        width: 20px;
+        height: 20px;
+    }
+`
+
+const PostDiv = styled.div`
+    position: relative;
+    width: 75%;
+    margin-top: 20px;
+
+    @media (max-width: 610px) {
+        width: 100%;
+    }
+`
+
 export {
+    PostDiv,
     PostBody,
     UserContainer,
     UserPicture,
     TextContainer,
     UserName,
     UserMessage,
-    MetadataContainer
+    MetadataContainer,
+    RepostTitle,
+    RepostButton
 }

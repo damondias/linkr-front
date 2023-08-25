@@ -1,3 +1,4 @@
+import { FaMagnifyingGlass } from "react-icons/fa6";
 import { styled } from "styled-components";
 
 export const SearchBarBody = styled.div`
@@ -7,6 +8,8 @@ export const SearchBarBody = styled.div`
     align-items: center;
     margin-top: 13.5px;
     background-color: #333333;
+
+    z-index: 15;
 
     @media (min-width: 376px) {
         position: fixed;
@@ -29,12 +32,8 @@ export const SearchBarBody = styled.div`
         padding: 0 20px;
         border: 0;
         border-radius: 8px;
-    }
-    ion-icon{
-        position: absolute;
-        margin: 8.5px -40px;
-        width: 28px;
-        height: 28px;
+
+        z-index: 15;
     }
     option{
         width:563px;
@@ -65,4 +64,11 @@ export const OptionArea = styled.div`
         display: flex;
         align-items: center;
     }
+`
+
+export const Icon = styled(FaMagnifyingGlass)`
+    position: absolute;
+    margin: 8.5px -40px;
+    width: 28px;
+    height: 28px;
 `

@@ -43,12 +43,44 @@
                     setPosts(res.data);
                     setLoading(false);
 
+<<<<<<< HEAD
                 })
                 .catch(error => {
                     setLoading(false);
                     setError(true);
                     console.log(error);
                 });
+=======
+        api.getPost(user?.token).then(res => {
+
+            setPosts(res.data);
+            setLoading(false);
+
+        }).catch(error => {
+
+            setLoading(false);
+            setError(true);
+
+            console.log(error);
+        });
+    }
+
+    useEffect(fetchPosts, [user?.token]);
+
+    const loadPosts = async () => {
+        const loadMorePosts = await api.getPost(user?.token, offsetScroll);
+
+        return loadMorePosts;
+    }
+
+    const loadFunc = async () => {
+        const { data: morePosts } = await loadPosts();
+
+        console.log(morePosts.length);
+        if (morePosts.length < 10) {
+            setPosts(posts.concat(morePosts));
+            return setHasMore(false);
+>>>>>>> main
         }
 
         function getNewPosts() {
@@ -76,6 +108,7 @@
     
         useInterval(getNewPosts, 15000);
 
+<<<<<<< HEAD
         const loadPosts = async () => {
             const loadMorePosts = await api.getPost(user?.token, offsetScroll);
 
@@ -148,3 +181,55 @@
             </>        
         );
     }
+=======
+    return(
+        <>
+            <MainContainer>
+                <LeftWrapper>
+                    <TimelineContainer>
+                        <TitleContainer>
+                            timeline
+                        </TitleContainer>
+                        <Publish fetchPosts={fetchPosts} userToken={user?.token}/>
+                        {isLoading
+                            ? <h2> Loading ... </h2>
+                            : posts?.length === 0
+                                ? <NoPost>{NoPostYetMessage}</NoPost>
+                                : error === true
+                                    ? <NoPost>{ServerErrorMessage}</NoPost>
+                                    : (
+                                        <InfiniteScroll
+                                            className='infinite-scroll'
+                                            pageStart={0}
+                                            loadMore={loadFunc}
+                                            hasMore={hasMore}
+                                            loader={<div className="loader" key={0}>Loading ... </div>}
+                                        >
+                                            {posts?.map((post,index) =>
+                                                <Post
+                                                    key={index}
+                                                    postId={post.id}
+                                                    url={post.url}
+                                                    title={post.urlTitle}
+                                                    description={post.urlDescription}
+                                                    image={post.urlImage}
+                                                    message={post.message}
+                                                    name={post.username}
+                                                    profilePic={post.profilePic}
+                                                    userId={post.userId}
+                                                    repUserId={post.repUserId}
+                                                    reposts={post.reposts}
+                                                />
+                                            )}
+                                        </InfiniteScroll>
+                                    )}
+                    </TimelineContainer>
+                </LeftWrapper>
+                <RightWrapper>
+                    <TrendingComponent/>
+                </RightWrapper>
+        </MainContainer>
+        </>        
+    );
+}
+>>>>>>> main

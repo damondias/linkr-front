@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Post, Publish } from "../components/index.components";
+import { Post} from "../components/index.components";
 import { LeftWrapper, MainContainer, NoPost, RightWrapper, TimelineContainer, TitleContainer } from "./Timeline/TimelineStyles";
 import api from "../services/api";
 import TrendingComponent from "../components/trendingComponent";
@@ -36,7 +36,7 @@ export default function UsersPage(){
         });
     }
 
-    useEffect(fetchPosts, []);
+    useEffect(fetchPosts, [user?.token,id]);
 
     return(
         <>
@@ -65,6 +65,8 @@ export default function UsersPage(){
                                                 name={post.name}
                                                 profilePic={post.profilePic}
                                                 userId={post.userId}
+                                                repUserId={post.repUserId}
+                                                reposts={post.reposts}
                                             />
                                         )
                                     )}

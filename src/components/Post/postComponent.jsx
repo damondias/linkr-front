@@ -36,7 +36,8 @@ export default function Post({ url, postId, title, description, image, message, 
     // Variáveis Like
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
-    const [userLiked, setUserLiked] = useState(false)
+    const [userLiked, setUserLiked] = useState(false);
+    const [sendLike, setSendLike] = useState('')
 
     // Variáveis Comments
     const [comment, setComment] = useState('');
@@ -66,7 +67,7 @@ export default function Post({ url, postId, title, description, image, message, 
 
     const data = {
         userId: user.userId,
-        postId
+        postId: postId
     }
 
     const config = {
@@ -78,10 +79,15 @@ export default function Post({ url, postId, title, description, image, message, 
     function getLikes(){
         const promise = axios.get(`${process.env.REACT_APP_API_URI}/likes/${postId}`, config)
          promise.then(resposta => {
+            setSendLike('Like')
             setLikes(resposta.data.count);
             setText(resposta.data.text)
             if(resposta.data.userLiked){
                 setUserLiked(true)
+                setSendLike('true')
+            }else{
+                setUserLiked(false)
+                setSendLike('')
             }
         })
         promise.catch((erro) => {
@@ -95,6 +101,7 @@ export default function Post({ url, postId, title, description, image, message, 
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/like`, data , config)
         promise.then(resposta => {
             console.log(resposta.data)
+            setSendLike('')
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
@@ -125,12 +132,13 @@ export default function Post({ url, postId, title, description, image, message, 
         const promise = axios.post(`${process.env.REACT_APP_API_URI}/comment/${postId}`, dataComment, config)
         promise.then(resposta => {
             console.log(resposta.data)
+            setComment('')
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
         })
 
-        getLikes();
+        getComments();
     }
 
     function toggleEdit() {
@@ -170,8 +178,6 @@ export default function Post({ url, postId, title, description, image, message, 
                 setSelected([...selected, id]);
             }
     }
-
-    console.log(selected)
 
     function repost(){
         setReposting(true)

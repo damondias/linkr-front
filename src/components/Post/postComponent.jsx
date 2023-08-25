@@ -31,14 +31,23 @@ import Comment from "../Comment";
 export default function Post({ url, postId, title, description, image, message, name, profilePic, userId, repUserId, reposts}) {
 
     const { user } = useAuth();
+
+    // Variáveis Like
     const [ likes, setLikes ] = useState(0);
     const [ text, setText ] = useState('');
     const [userLiked, setUserLiked] = useState(false)
 
+    // Variáveis Comments
+    const [comment, setComment] = useState('');
+    const [countComments, setCountComments] = useState(0);
+    const [dataComments, setDataComments] = useState([]);
+    const [followingComments, setFollowingComments] = useState([]);
+
+    //Variáveis Delete and Edit
     const [isDeleting, setDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [textToEdit, setTextToEdit] = useState(message);
-    const [comment, setComment] = useState('')
+    
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -90,6 +99,36 @@ export default function Post({ url, postId, title, description, image, message, 
         getLikes();
     }
 
+    function getComments(){
+        const promise = axios.get(`${process.env.REACT_APP_API_URI}/comments/${postId}`, config)
+         promise.then(resposta => {
+            setDataComments(resposta.data.comments)
+            setCountComments(resposta.data.countComment)
+            setFollowingComments(resposta.data.following)
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
+    }
+
+    useEffect(getComments, [user.postId, postId, url, user])
+
+    const dataComment = {
+        text: comment
+    }
+
+    function commentPost(){
+        const promise = axios.post(`${process.env.REACT_APP_API_URI}/comment/${postId}`, dataComment, config)
+        promise.then(resposta => {
+            console.log(resposta.data)
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
+
+        getLikes();
+    }
+
     function toggleEdit() {
         setTextToEdit(message);
         setIsEditing(!isEditing);
@@ -118,6 +157,8 @@ export default function Post({ url, postId, title, description, image, message, 
             toggleEdit();
     }
 
+    console.log(dataComments)
+
     return (
         <PostDiv>
             {
@@ -142,12 +183,12 @@ export default function Post({ url, postId, title, description, image, message, 
                     </SCTooltip>
                 </SCContainerLikes>
                 <SCContainerComment>
-                        <SCComments />
-                        <SCQntdComments>11 comments</SCQntdComments>
+                        <SCComments onClick={() => commentPost()}/>
+                        <SCQntdComments>{countComments} comments</SCQntdComments>
                 </SCContainerComment>
                 <RepostButton>
                     <SCShares />
-                    {reposts==null?0:reposts} re-posts
+                    {reposts==null?0 :reposts } re-posts
                 </RepostButton>
             </UserContainer>
             <TextContainer>
@@ -189,7 +230,9 @@ export default function Post({ url, postId, title, description, image, message, 
             <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
         <SCContainerComments>
-                    <Comment profilePic={profilePic}/>
+                    {dataComments.map((c) => {
+                        <Comment following={followingComments} name={c.name}/>
+                    })}
                     <SCNewComment>
                         <SCPicture>
                             <img src={user.image ? user.image : default_profile_pic} />

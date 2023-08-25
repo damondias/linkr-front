@@ -181,7 +181,7 @@ export default function Post({ url, postId, title, description, image, message, 
     function repost(){
         setReposting(true)
     }
-    console.log(repUserId)
+    console.log(`user:${repUserId}`)
 
     return (
         <PostDiv>

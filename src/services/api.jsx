@@ -25,18 +25,26 @@ async function getPost(token, offset) {
     return promise;
 }
 
-async function getHashtagPost(token,hashtag) {
+async function getHashtagPost(token,hashtag, offset) {
     const auth = createHeaders(token);
 
-    const promise = await axios.get(`${BASE_URL}/hashtag/${hashtag}`, auth);
+    const render_limit = 10;
+    const queryLimit = `?limit=${render_limit}&`;
+    const queryOffset = offset ? `?offset=${offset}` : '';
+
+    const promise = await axios.get(`${BASE_URL}/hashtag/${hashtag}${queryLimit}${queryOffset}`, auth);
 
     return promise;
 }
 
-async function getUsersPost(token,id) {
+async function getUsersPost(token,id,offset) {
     const auth = createHeaders(token);
 
-    const promise = await axios.get(`${BASE_URL}/user/${id}`, auth);
+    const render_limit = 10;
+    const queryLimit = `?limit=${render_limit}&`;
+    const queryOffset = offset ? `?offset=${offset}` : '';
+
+    const promise = await axios.get(`${BASE_URL}/user/${id}${queryLimit}${queryOffset}`, auth);
 
     return promise;
 }

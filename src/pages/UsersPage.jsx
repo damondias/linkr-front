@@ -5,6 +5,7 @@ import api from "../services/api";
 import TrendingComponent from "../components/trendingComponent";
 import { useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function UsersPage(){
     const { user } = useAuth();
@@ -16,6 +17,9 @@ export default function UsersPage(){
 
     const NoPostYetMessage = "There are no posts yet";
     const ServerErrorMessage = `An error occured while trying to fetch the posts, please refresh the page`;
+
+    const [offsetScroll, setOffsetScroll] = useState(10);
+    const [hasMore, setHasMore] = useState(true);
 
     function fetchPosts() {
 
@@ -38,6 +42,25 @@ export default function UsersPage(){
 
     useEffect(fetchPosts, [user?.token,id]);
 
+    const loadPosts = async () => {
+        const loadMorePosts = await api.getUsersPost(user?.token, id, offsetScroll);
+
+        return loadMorePosts;
+    }
+
+    const loadFunc = async () => {
+        const { data: morePosts } = await loadPosts();
+
+        console.log(morePosts.length);
+        if (morePosts.length < 10) {
+            setPosts(posts.concat(morePosts));
+            return setHasMore(false);
+        }
+
+        setPosts(posts.concat(morePosts));
+        setOffsetScroll(offsetScroll + 10);
+    }
+
     return(
         <>
             <MainContainer>
@@ -53,22 +76,30 @@ export default function UsersPage(){
                                 : error === true
                                     ? <NoPost>{ServerErrorMessage}</NoPost>
                                     : (
-                                        posts?.map((post) =>
-                                            <Post
-                                                key={post.id}
-                                                postId={post.id}
-                                                url={post.url}
-                                                title={post.urlTitle}
-                                                description={post.urlDescription}
-                                                image={post.urlImage}
-                                                message={post.message}
-                                                name={post.name}
-                                                profilePic={post.profilePic}
-                                                userId={post.userId}
-                                                repUserId={post.repUserId}
-                                                reposts={post.reposts}
-                                            />
-                                        )
+                                        <InfiniteScroll
+                                            className='infinite-scroll'
+                                            pageStart={0}
+                                            loadMore={loadFunc}
+                                            hasMore={hasMore}
+                                            loader={<div className="loader" key={0}>Loading ... </div>}
+                                        >
+                                            {posts?.map((post) =>
+                                                <Post
+                                                    key={post.id}
+                                                    postId={post.id}
+                                                    url={post.url}
+                                                    title={post.urlTitle}
+                                                    description={post.urlDescription}
+                                                    image={post.urlImage}
+                                                    message={post.message}
+                                                    name={post.name}
+                                                    profilePic={post.profilePic}
+                                                    userId={post.userId}
+                                                    repUserId={post.repUserId}
+                                                    reposts={post.reposts}
+                                                />
+                                            )}
+                                        </InfiniteScroll>
                                     )}
                     </TimelineContainer>
                 </LeftWrapper>

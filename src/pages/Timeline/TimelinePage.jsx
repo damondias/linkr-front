@@ -38,8 +38,7 @@ export default function Timeline(){
         });
     }
 
-    useEffect(fetchPosts, [user?.token
-    ]);
+    useEffect(fetchPosts, [user?.token]);
 
     const loadPosts = async () => {
         const loadMorePosts = await api.getPost(user?.token, offsetScroll);

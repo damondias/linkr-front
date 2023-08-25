@@ -1,17 +1,11 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
 
 const BASE_URL = process.env.REACT_APP_API_URI;
 
 
-async function useSignUp() {
-    const navigate = useNavigate()
-
-    return (body) => {
-        axios.post(`${BASE_URL}/cadastro`, body)
-            .then(res => navigate("/"))
-            .catch(err => alert(err.response.data))
-    }
+async function signUp(body) {
+    const promise = await axios.post(`${BASE_URL}/cadastro`, body);
+    return promise;
 }
 
 
@@ -22,5 +16,5 @@ async function login(body) {
 
 
 
-const apiAuth = {useSignUp, login} 
+const apiAuth = { signUp, login} 
 export default apiAuth

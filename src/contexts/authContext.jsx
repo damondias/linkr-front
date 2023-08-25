@@ -1,13 +1,13 @@
 import { createContext, useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { /*useLocation,*/ useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   useEffect(() => {
     if (user) {

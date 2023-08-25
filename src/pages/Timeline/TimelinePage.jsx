@@ -22,78 +22,59 @@
         const [hasMore, setHasMore] = useState(true);
 
         const [newPosts, setNewPosts] = useState([]);
-        const [lastPostCreatedAt, setLastPostCreatedAt] = useState();
+        const [loadingNewPosts, setLoadingNewPosts] = useState(false);
        
         useEffect(() => {
             fetchPosts();
-        }, [fetchPosts]);
-
+        }, []);
+    
         useEffect(() => {
             if (newPosts.length > 0) {
-                setPosts([...newPosts, ...posts]);
-                setNewPosts([]);
+                // Não atualiza automaticamente os novos posts na linha do tempo
             }
-        }, [newPosts, posts]);
-        
+        }, [newPosts]);
+    
+
         function fetchPosts() {
+            setLoading(true);
 
-            // setLoading(true);
+            api.getPost(user?.token)
+                .then(res => {
+                    setPosts(res.data);
+                    setLoading(false);
 
-            api.getPost(user?.token).then(res => {
-
-                setPosts(res.data);
-                setLoading(false);
-
-                if (res.data.length > 0) {
-                    setLastPostCreatedAt(res.data[0].createdAt);
-                }
-                startCheckingForNewPosts();
-
-            }).catch(error => {
-
-                setLoading(false);
-                setError(true);
-
-                console.log(error);
-            });
+                })
+                .catch(error => {
+                    setLoading(false);
+                    setError(true);
+                    console.log(error);
+                });
         }
-
-        useEffect(fetchPosts, [user?.token]);
 
         function getNewPosts() {
+            setLoadingNewPosts(true);
             api.getPost(user?.token)
-                .then(res => verifyNewPosts(res.data))
-                .catch(error => console.log(error));
+                .then(res => {
+                    const incomingPosts = res.data;
+                    const newPosts = incomingPosts.filter(post => new Date(post.createdAt) > new Date(posts[0]?.createdAt));
+                    if (newPosts.length > 0) {
+                        setNewPosts(newPosts);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoadingNewPosts(false);
+                });
         }
     
-        function verifyNewPosts(incomingPosts) {
-            const newPosts = incomingPosts.filter(post => new Date(post.createdAt) > new Date(lastPostCreatedAt));
-            console.log({ news: newPosts, incomingPosts });
-            if (newPosts.length > 0) {
-                const newestPostCreatedAt = newPosts.reduce((max, post) => {
-                    const postDate = new Date(post.createdAt);
-                    return (postDate > max ? postDate : max);
-                }, new Date(lastPostCreatedAt));
-                console.log("Newest post createdAt:", newestPostCreatedAt); // Add this log
-                setLastPostCreatedAt(newestPostCreatedAt);
-                console.log("Updated lastPostCreatedAt:", lastPostCreatedAt); // Add this log
-                setNewPosts(newPosts);
-                console.log("Updated newPosts:", newPosts); // Add this log
-            }
-        }
-        
-
-        function loadNewPosts() {
-            setPosts([...newPosts, ...posts]); // Insere os novos posts no topo
-            setNewPosts([]); // Limpa a lista de novos posts
-        }
-
-        function startCheckingForNewPosts() {
-            useCustomInterval(() => {
-                getNewPosts();
-            }, 15000);
-        }
-
+        const handleLoadNewPosts = () => {
+            setNewPosts([]);
+            fetchPosts();
+        };
+    
+        useInterval(getNewPosts, 15000);
 
         const loadPosts = async () => {
             const loadMorePosts = await api.getPost(user?.token, offsetScroll);
@@ -123,8 +104,8 @@
                                 timeline
                             </TitleContainer>
                             <Publish fetchPosts={fetchPosts} userToken={user?.token}/>
-                            {newPosts?.length >= 0 &&  
-                                <Reloader onClick={loadNewPosts}>
+                            {newPosts?.length > 0 &&  
+                                <Reloader onClick={handleLoadNewPosts} >
                                     <span>{newPosts?.length} new posts, load more! </span><IoRepeatSharp size="20px" />
                                 </Reloader>
                             }

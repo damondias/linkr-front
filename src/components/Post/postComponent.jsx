@@ -105,9 +105,6 @@ export default function Post({ url, postId, title, description, image, message, 
             setDataComments(resposta.data.comments)
             setCountComments(resposta.data.countComment)
             setFollowingComments(resposta.data.following)
-
-            console.log(dataComments)
-            console.log(followingComments)
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
@@ -160,7 +157,9 @@ export default function Post({ url, postId, title, description, image, message, 
             toggleEdit();
     }
 
-    console.log(dataComments)
+    function visibleComments(){
+
+    }
 
     return (
         <PostDiv>
@@ -186,7 +185,7 @@ export default function Post({ url, postId, title, description, image, message, 
                     </SCTooltip>
                 </SCContainerLikes>
                 <SCContainerComment>
-                        <SCComments />
+                        <SCComments onClick={() => visibleComments()}/>
                         <SCQntdComments>{countComments} comments</SCQntdComments>
                 </SCContainerComment>
                 <RepostButton>
@@ -232,25 +231,29 @@ export default function Post({ url, postId, title, description, image, message, 
             <SCDelete userPost={userId === user.userId} onClick={() => setDeleting(true)}/>
             <SCEdit userPost={userId === user.userId} onClick={toggleEdit}/>
         </PostBody>
-        <SCContainerComments>
-                    {dataComments.map((c) => {
-                        <SCContainerCommentarios>
-                        <SCPictureComments src={'alo'}/>
-                        <SCtextComments>
-                            <SCTitleComments>
-                                <SCNameComments>
-                                    
-                                </SCNameComments>
-                                <SCInfosComments>
-                                    • following
-                                </SCInfosComments>
-                            </SCTitleComments>
-                            <SCCommentComments>
-                                
-                            </SCCommentComments>
-                        </SCtextComments>
-                    </SCContainerCommentarios>
-                    })}
+        <SCContainerComments visible={''}>
+                    {dataComments.length === 0 ? '' :
+                        (dataComments.map((c, i) => 
+                            <SCContainerCommentarios key={i}>
+                            <SCPictureComments src={c.image}/>
+                            <SCtextComments>
+                                <SCTitleComments>
+                                    <SCNameComments>
+                                        {c.name}
+                                    </SCNameComments>
+                                    <SCInfosComments>
+                                        {c.userId === userId ? "• post's author" : ''}
+                                    </SCInfosComments>
+                                    <SCInfosComments>
+                                        {followingComments.includes(c.userId) ? "• following" : ''}
+                                    </SCInfosComments>
+                                </SCTitleComments>
+                                <SCCommentComments>
+                                    {c.text}
+                                </SCCommentComments>
+                            </SCtextComments>
+                        </SCContainerCommentarios>
+                        ))}
                     <SCNewComment>
                         <SCPicture>
                             <img src={user.image ? user.image : default_profile_pic} />
@@ -283,7 +286,7 @@ const SCContainerLikes = styled.div`
 
 const SCBackground = styled.div`
     width: 100%;
-    min-height: 340px;
+    min-height: 265px;
 
     position: absolute;
     top: 0;
@@ -301,7 +304,7 @@ background-color: #1E1E1E;
 border-radius: 0px 0px 16px 16px;
 border: none;
 
-padding: 19px 25px 16px 25px;
+padding: 25px 25px 16px 25px;
 
 box-sizing: border-box;
 
@@ -310,6 +313,8 @@ width: 100%;
 border-radius: 0;
 
 padding: 15px 9px;
+
+z-index: 4;
 }
 `
 

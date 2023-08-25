@@ -53,7 +53,6 @@ export default function SearchBar(){
             <form onSubmit={e=>handleSubmit(e)}>
                 <DebounceInput minLength={3} debounceTimeout={300}
                 onChange={e=>setSearch(e.target.value)} value={search}/>
-                <Icon onClick={()=>Send("no")}></Icon>
                 <OptionArea>
                     {results.map(e=>{return(
                         <div onClick={()=>selectOption(e)}>
@@ -62,6 +61,7 @@ export default function SearchBar(){
                         </div>
                 )})}
                 </OptionArea>
+                <Icon onClick={()=>Send("no")}></Icon>
             </form>
         </SearchBarBody>
     )

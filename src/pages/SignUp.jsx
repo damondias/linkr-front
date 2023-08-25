@@ -16,23 +16,22 @@ export default function SingUpPage(){
 
   function logando(e) {
     e.preventDefault();
-    console.log(form);
   
     const body = {
       email: form.email,
       password: form.password,
       username: form.username,
-      url: form.url
+      image: form.image
     };
   
-    apiAuth.useSignUp(body)
+    apiAuth.signUp(body)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         navigate("/");
       })
       .catch(err => {
         console.log(err.response);
-        alert(err.response);
+        alert(err.response.data);
       });
   }
 
@@ -42,14 +41,14 @@ export default function SingUpPage(){
         <ContainerPage>
           <div className="left-content">
               <Titulo>linkr</Titulo>
-              <Subtitle>lsave, share and discover the best links on the web</Subtitle>
+              <Subtitle>save, share and discover the best links on the web</Subtitle>
           </div>
         <div className="right-content">
           <Form onSubmit={logando}>
           <StyledInput placeholder="E-mail" type="email" name="email" value={form.email} required onChange={(e) => formulario(e)} />
             <StyledInput placeholder="Password" type="password" name="password" value={form.password} required onChange={(e) => formulario(e)}/>
-            <StyledInput placeholder="username" type="password" name="username" value={form.username} required onChange={(e) => formulario(e)}/>
-            <StyledInput placeholder="picture url" type="password" name="url" value={form.url} required onChange={(e) => formulario(e)}/>
+            <StyledInput placeholder="username" type="text" name="username" value={form.username} required onChange={(e) => formulario(e)}/>
+            <StyledInput placeholder="picture url" type="url" name="image" value={form.image} required onChange={(e) => formulario(e)}/>
             <Button type="submit">Sign Up</Button>
             <Link to="/"> <StyledParagraph>Switch back to log in</StyledParagraph></Link>
             

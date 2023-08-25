@@ -4,7 +4,7 @@ const SCContainerCommentarios = styled.div`
     width: 100%;
     min-height: 71px;
 
-    display: flex;
+    display: ${props => props.visible ? 'flex' : 'none'};
     align-items: center;
 
     border-bottom: 1px solid #353535;

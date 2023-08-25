@@ -8,12 +8,13 @@ export default function ConfirmRepost(props){
     const token = user.token;
     const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
     };
 
     function Yes(){
-        axios.post(`${process.env.REACT_APP_API_URI}/repost/${props.postId}`,config)
+        console.log(config)
+        axios.post(`${process.env.REACT_APP_API_URI}/repost/${props.postId}`,"",config)
         .then(()=>props.function(false))
         .catch(err=>console.log(err.data))
     }

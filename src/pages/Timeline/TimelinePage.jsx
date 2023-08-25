@@ -41,6 +41,7 @@
             api.getPost(user?.token)
                 .then(res => {
                     setPosts(res.data);
+                    console.log(res.data)
                     setLoading(false);
                 })
                 .catch(error => {
@@ -131,7 +132,7 @@
                                                         description={post.urlDescription}
                                                         image={post.urlImage}
                                                         message={post.message}
-                                                        name={post.name}
+                                                        name={post.username}
                                                         profilePic={post.profilePic}
                                                         userId={post.userId}
                                                     />

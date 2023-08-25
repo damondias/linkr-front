@@ -90,7 +90,7 @@ export default function HashtagPage(){
                                                     description={post.urlDescription}
                                                     image={post.urlImage}
                                                     message={post.message}
-                                                    name={post.name}
+                                                    name={post.username}
                                                     profilePic={post.image}
                                                     userId={post.userId}
                                                     repUserId={post.repUserId}

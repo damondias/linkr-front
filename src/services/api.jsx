@@ -52,7 +52,7 @@ async function getTrends(token) {
 async function getSearch(token,search) {
     const auth = createHeaders(token);
 
-    const promise = await axios.get(`${BASE_URL}/users/find/${search}`, auth);
+    const promise = await axios.get(`${BASE_URL}/users/find/?username=${search}`, auth);
 
     return promise;
 }

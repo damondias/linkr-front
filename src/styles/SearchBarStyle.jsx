@@ -64,6 +64,17 @@ export const OptionArea = styled.div`
         display: flex;
         align-items: center;
     }
+
+    p{
+        display: inline;
+        font-family: Lato;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #C5C5C5;
+        padding-left: 10px;
+    }
 `
 
 export const Icon = styled(FaMagnifyingGlass)`

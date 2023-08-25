@@ -15,11 +15,9 @@ export default function SearchBar(){
     const {user} = useAuth()
 
     useEffect(()=>{
-        if(search!=""){
-            api.getSearch(user?.token,search)
-            .then(r=>{setResults(r.data)})
-            .catch(error=>console.log(error.message))
-        }
+        api.getSearch(user?.token,search)
+        .then(r=>{setResults(r.data)})
+        .catch(error=>console.log(error.message))
     },[search])
 
     if(location.pathname=="/sign-up"||location.pathname=="/") return
@@ -60,6 +58,7 @@ export default function SearchBar(){
                     {results.map(e=>{return(
                         <div onClick={()=>selectOption(e)}>
                             <img src={e.image}/> {e.username}
+                            <p>{e.followedId?"• following":""}</p>
                         </div>
                 )})}
                 </OptionArea>
